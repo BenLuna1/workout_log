@@ -119,6 +119,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .wts::-webkit-scrollbar{display:none}
 .wts.scrolling{-webkit-mask-image:linear-gradient(to right,transparent 0,black 24px,black calc(100% - 24px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,black 24px,black calc(100% - 24px),transparent 100%)}
 .wb{font-size:11px;padding:3px 9px;border-radius:var(--r1);border:1.5px solid var(--b1);background:transparent;color:var(--ts);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;font-weight:500}
+.wb.past{opacity:.38}
 .wb:hover{background:var(--bg-card);color:var(--tx)}
 .wb.aw{font-weight:700}
 /* Session */
@@ -580,6 +581,12 @@ const BF_GOAL=17,BF_MS=[20,19,18],DCUT='2026-06-29',BF_START=24,EBW=76.5,EBA=45,
 const DP=[{label:'Maintenance',start:'2026-06-20',kcal:2400,p:160,f:80,c:260},{label:'Cut B',start:'2026-07-11',kcal:1900,p:180,f:70,c:145}];
 const BW=new Set(['bw_pushups','bw_nordic_curl','dead_bug_s2','dead_bug_s3','back_ext','bulg_split','ab_rollout']);
 const PROG_EXCL=new Set(['cycling','walking','plank_s2','plank_s3']);
+const PROG_EXCL_NAMES=['cycling','daily walk','walking'];
+function isProgExcluded(id){
+  if(PROG_EXCL.has(String(id).toLowerCase()))return true;
+  const nm=(lbi(id).n||'').toLowerCase();
+  return PROG_EXCL_NAMES.some(frag=>nm.includes(frag));
+}
 const DL=[
   {id:'s_arm_db_bench',n:'Single Arm DB Bench Press',t:'DB — alternate sides',sets:3,r:'12'},{id:'arnold_press',n:'Arnold Press',t:'DB, seated',sets:3,r:'10'},
   {id:'db_lat_raise',n:'DB Lateral Raise',t:'DB, controlled eccentric',sets:3,r:'15'},{id:'face_pulls',n:'Face Pulls',t:'Band',sets:3,r:'15'},
@@ -792,7 +799,8 @@ function rdrSel(){
 }
 function rdrW(){
   const el=document.getElementById('wt');el.innerHTML='';
-  for(let w=1;w<=TW;w++){const ph=phFor(dfo(w2o(w)+6));const col=phCol(ph);const b=document.createElement('button');b.className='wb'+(w===CW?' aw':'');b.textContent='W'+w;if(col){b.style.borderColor=col;if(w===CW){b.style.background=col+'18';b.style.color=col;b.style.borderWidth='2px';}}b.addEventListener('click',()=>{CW=w;SO=w2o(w);rdrW();rdrS();rdrSA();});el.appendChild(b);}
+  const curWeek=o2w(tOff());
+  for(let w=1;w<=TW;w++){const ph=phFor(dfo(w2o(w)+6));const col=phCol(ph);const b=document.createElement('button');b.className='wb'+(w===CW?' aw':'')+(w<curWeek?' past':'');b.textContent='W'+w;if(col){b.style.borderColor=col;if(w===CW){b.style.background=col+'18';b.style.color=col;b.style.borderWidth='2px';}}b.addEventListener('click',()=>{CW=w;SO=w2o(w);rdrW();rdrS();rdrSA();});el.appendChild(b);}
   setTimeout(()=>{const a=el.querySelector('.wb.aw');if(a)a.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});},50);
 }
 function scrollToWeek(w){const cell=document.querySelector('#sg .dc[data-off="'+w2o(w)+'"]');if(cell)cell.scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});}
@@ -1099,13 +1107,13 @@ function rdrPC(s,cont){
   if(!window.Chart)return;
   const days=gPD(s);const exSet=new Set();
   days.forEach(o=>{
-    gSEX(o,s).filter(id=>id&&!id.startsWith('__new__')&&!id.startsWith('_')&&!PROG_EXCL.has(id.toLowerCase())).forEach(id=>{
+    gSEX(o,s).filter(id=>id&&!id.startsWith('__new__')&&!id.startsWith('_')&&!isProgExcluded(id)).forEach(id=>{
       const v=DT[dkd(o,s,id)];if(v&&(v[0]!==null||v[1]!==null)&&!wSk(o,s,id))exSet.add(id);
     });
   });
   Object.keys(DT).forEach(k=>{
     const m=k.match(/^dt_(-?\d+)_([^_]+)_(.+)$/);if(!m||m[2]!==s)return;
-    const off=parseInt(m[1]);if(isR(off)||off>tOff()||PROG_EXCL.has(m[3].toLowerCase())||m[3].startsWith('_'))return;
+    const off=parseInt(m[1]);if(isR(off)||off>tOff()||isProgExcluded(m[3])||m[3].startsWith('_'))return;
     const v=DT[k];if(v&&(v[0]!==null||v[1]!==null)&&!wSk(off,s,m[3]))exSet.add(m[3]);
   });
   const exIds=Array.from(exSet).filter(id=>id&&!id.startsWith('_'));
@@ -1299,13 +1307,15 @@ function rdrMeas(){rdrBFG();rdrBFC('bfsp','bfsd','bfsc',e=>e.bf_scale!=null?e.bf
 // Week Summary
 function buildCalChart(el){
   if(!window.Chart)return;
-  // Aggregate S1/S2/S3 only (S4 excluded — free session)
+  // S1/S2/S3 tracked individually for the per-type lines; S4 (free session) is folded
+  // into Total only, so Total matches the "Active Calories" stat tile above, which sums
+  // every logged day regardless of session type.
   const byP={};const to=tOff();
   for(let o=0;o<TW*7;o++){
     if(o>to)continue;const t=gDT(o);if(!t||!t.ca)continue;
-    const sess=DS[o];if(!sess||sess==='S4')continue;
+    const sess=DS[o];if(!sess)continue;
     let period=wjMode==='week'?'W'+o2w(o):(()=>{const d=dfo(o);return MN[d.getMonth()]+' '+d.getFullYear();})();
-    if(!byP[period])byP[period]={S1:0,S2:0,S3:0};
+    if(!byP[period])byP[period]={S1:0,S2:0,S3:0,S4:0};
     if(byP[period][sess]!==undefined)byP[period][sess]+=t.ca;
   }
   const labels=Object.keys(byP);
@@ -1315,7 +1325,8 @@ function buildCalChart(el){
   const s1d=labels.map(p=>byP[p]&&byP[p].S1?byP[p].S1:null);
   const s2d=labels.map(p=>byP[p]&&byP[p].S2?byP[p].S2:null);
   const s3d=labels.map(p=>byP[p]&&byP[p].S3?byP[p].S3:null);
-  const totd=labels.map((_,i)=>{const a=s1d[i]||0,b=s2d[i]||0,c=s3d[i]||0;return a+b+c>0?a+b+c:null;});
+  const s4d=labels.map(p=>byP[p]&&byP[p].S4?byP[p].S4:null);
+  const totd=labels.map((_,i)=>{const a=s1d[i]||0,b=s2d[i]||0,c=s3d[i]||0,d=s4d[i]||0;return a+b+c+d>0?a+b+c+d:null;});
   const datasets=[
     {label:'S1 '+SM.S1.d.split(' · ')[0],data:s1d,borderColor:SC.S1,backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,spanGaps:false},
     {label:'S2 '+SM.S2.d.split(' · ')[0],data:s2d,borderColor:SC.S2,backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,spanGaps:false},
