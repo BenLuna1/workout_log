@@ -341,107 +341,17 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
 #hv.open,#lv.open,#pv.open,#mv.open,#wv.open{display:block}
 /* Home / Morning Check-in */
 .hk-date{font-size:11px;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.hk-greet{font-size:20px;font-weight:700;color:var(--tx);margin-top:2px;margin-bottom:1.5rem;letter-spacing:-.02em}
-.hk-sec{margin-bottom:1.7rem}
-.hk-sec:last-child{margin-bottom:0}
-.hk-sec-t{font-size:11px;font-weight:700;color:var(--tm);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
-.hk-target{font-size:11px;color:var(--ts);margin-bottom:.7rem}
-.hk-macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-@media(max-width:420px){.hk-macro-grid{grid-template-columns:repeat(2,1fr)}}
-.hk-mchip{border-radius:var(--r2);border:1.5px solid var(--b1);background:var(--bg-section);padding:.65rem .4rem;text-align:center;transition:all .15s}
-.hk-mchip.green{border-color:var(--ok-bd);background:var(--ok-bg)}
-.hk-mchip.amber{border-color:var(--wn-bd);background:var(--wn-bg)}
-.hk-mchip.red{border-color:var(--er-tx);background:var(--er-bg)}
-.hk-min{width:100%;background:transparent;border:none;text-align:center;font-size:16px;font-weight:700;color:var(--tx);-moz-appearance:textfield}
-.hk-min::-webkit-inner-spin-button,.hk-min::-webkit-outer-spin-button{-webkit-appearance:none}
-.hk-min:focus{outline:none}
-.hk-min::placeholder{color:var(--tm);font-weight:500}
-.hk-mlbl{font-size:9px;font-weight:700;color:var(--tm);text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
-.hk-sleep-pills{display:flex;gap:8px}
-.hk-spill{flex:1;padding:.8rem;border-radius:var(--r2);border:1.5px solid var(--b1);background:var(--bg-section);text-align:center;font-size:14px;font-weight:600;color:var(--ts);cursor:pointer;transition:all .15s;user-select:none}
-.hk-spill:hover{border-color:var(--b2)}
-.hk-spill.sel-red{border-color:var(--er-tx);background:var(--er-bg);color:var(--er-tx)}
-.hk-spill.sel-green{border-color:var(--ok-bd);background:var(--ok-bg);color:var(--ok-tx)}
-.hk-ebar-wrap{position:relative;padding:2px 0 40px}
-.hk-ebar-track{position:relative;height:8px;border-radius:4px;background:var(--bg-card);border:1px solid var(--b0)}
-.hk-ebar-fill{height:8px;border-radius:4px;transition:width .2s,background .2s;width:0}
-.hk-etick{position:absolute;top:-13px;width:34px;height:34px;margin-left:-17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;background:var(--bg-root);border:2px solid var(--b1);transition:all .15s;user-select:none}
-.hk-etick:hover{border-color:var(--b2)}
-.hk-etick.sel{transform:scale(1.16);box-shadow:0 2px 8px rgba(0,0,0,.14)}
-.hk-etick-lbl{position:absolute;top:24px;transform:translateX(-50%);font-size:9px;font-weight:700;color:var(--tm);letter-spacing:.02em;white-space:nowrap;cursor:pointer;transition:color .15s}
-.hk-etick-lbl:hover{color:var(--ts)}
-.hk-etick-lbl.sel{color:var(--tx);font-weight:800}
-.hk-done{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3.2rem 1rem 2.4rem;text-align:center;gap:.6rem}
-.hk-done-icon{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ts);background:var(--bg-section)}
-.hk-done-txt{font-size:13px;color:var(--ts);font-weight:500}
-.hk-done-edit{font-size:11px;color:var(--tm);background:none;border:none;cursor:pointer;text-decoration:underline;padding:2px;margin-top:2px}
-.hk-done-edit:hover{color:var(--ts)}
-.hk-confirm{width:100%;padding:.9rem;border-radius:var(--r2);border:none;background:var(--ab);color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
-.hk-confirm:hover{filter:brightness(1.06)}
-.hk-confirm.done{background:var(--ok-bg);color:var(--ok-tx);border:1.5px solid var(--ok-bd);cursor:default}
-.hk-confirm.done:hover{filter:none}
-/* Hello overlay */
-.hello-ov{display:none;position:absolute;inset:0;z-index:50;background:var(--bg-root);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;gap:.5rem;cursor:pointer}
-.hello-ov.show{display:flex}
-.hello-ov-date{font-size:12px;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.hello-ov-greet{font-size:28px;font-weight:800;color:var(--tx);letter-spacing:-.02em;margin-top:4px}
-.hello-ov-sub{font-size:14px;color:var(--ts);max-width:280px;line-height:1.55;margin-top:6px}
-.hello-ov-btn{margin-top:1.1rem;font-size:14px;font-weight:700;padding:.85rem 1.7rem;border-radius:var(--r2);border:none;background:var(--ab);color:#fff;cursor:pointer;transition:all .15s}
-.hello-ov-btn:hover{filter:brightness(1.08)}
+.hk-greet{font-size:20px;font-weight:700;color:var(--tx);margin-top:2px;letter-spacing:-.02em}
+.home-landing{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3.5rem 1rem;text-align:center;gap:.35rem}
 .hello-sun{margin-bottom:.2rem}
 .hello-sun circle{animation:sun-pulse 3.2s ease-in-out infinite}
 .hello-sun g{animation:sun-glow 3.2s ease-in-out infinite}
 @keyframes sun-pulse{0%,100%{opacity:1}50%{opacity:.7}}
 @keyframes sun-glow{0%,100%{opacity:1}50%{opacity:.45}}
-.hk-hdr-row{display:flex;align-items:center;justify-content:space-between}
-.hk-hist-btn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--b1);background:var(--bg-section);color:var(--ts);cursor:pointer;font-weight:500;transition:all .12s}
-.hk-hist-btn:hover{background:var(--bg-card);color:var(--tx);border-color:var(--b2)}
-.hist-list{max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
-.hist-row{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--b0);font-size:13px}
-.hist-row:last-child{border-bottom:none}
-.hist-date{font-size:12px;font-weight:700;color:var(--tx);width:48px;flex-shrink:0}
-.hist-dots{display:flex;gap:3px;flex-shrink:0}
-.hist-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.hist-dot.green{background:var(--ok-tx)}
-.hist-dot.amber{background:var(--wn-tx)}
-.hist-dot.red{background:var(--er-tx)}
-.hist-dot.gray{background:var(--b2)}
-.hist-sleep{font-size:11px;color:var(--tm);flex-shrink:0;white-space:nowrap}
-.hist-sleep.red{color:var(--er-tx)}
-.hist-sleep.green{color:var(--ok-tx)}
-.hist-energy{font-size:14px;flex-shrink:0;width:18px;text-align:center}
-.hist-note{font-size:12px;opacity:.5;flex-shrink:0;margin-left:auto}
-.hist-empty{font-size:13px;color:var(--tm);padding:1.5rem 0;text-align:center}
-/* Week macro adherence overview */
-.wk-mac-wrap{background:var(--bg-section);border-radius:var(--r2);border:1px solid var(--b1);padding:.85rem 1rem;margin-bottom:1rem}
-.wk-mac-hero{display:flex;flex-direction:column;gap:2px;margin:.55rem 0 .7rem}
-.wk-mac-pct{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1}
-.wk-mac-sub{font-size:12px;color:var(--ts);font-weight:500}
-.wk-mac-bar{height:6px;border-radius:3px;background:var(--bg-card);border:1px solid var(--b0);overflow:hidden}
-.wk-mac-bar-fill{height:100%;border-radius:3px;transition:width .3s,background .3s}
 </style>
 </head>
 <body>
 <div id="root">
-<div class="hello-ov" id="hello-ov">
-  <svg class="hello-sun" viewBox="0 0 100 100" width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="17" stroke="var(--aa)" stroke-width="4"/>
-    <g stroke="var(--aa)" stroke-width="4" stroke-linecap="round">
-      <line x1="50" y1="6" x2="50" y2="18"/>
-      <line x1="50" y1="82" x2="50" y2="94"/>
-      <line x1="6" y1="50" x2="18" y2="50"/>
-      <line x1="82" y1="50" x2="94" y2="50"/>
-      <line x1="19" y1="19" x2="27" y2="27"/>
-      <line x1="73" y1="73" x2="81" y2="81"/>
-      <line x1="81" y1="19" x2="73" y2="27"/>
-      <line x1="27" y1="73" x2="19" y2="81"/>
-    </g>
-  </svg>
-  <div class="hello-ov-date" id="ov-date">—</div>
-  <div class="hello-ov-greet" id="ov-greet">—</div>
-  <div class="hello-ov-sub">Time for your morning check-in — a quick tap through macros, sleep, and energy before the day starts.</div>
-  <button class="hello-ov-btn" id="ov-begin">Begin check-in →</button>
-</div>
 <div class="hdr">
   <div>
     <div class="hdr-t">Training Log<span class="hdr-v">v42</span></div>
@@ -473,12 +383,6 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
   <div class="ebs"><button class="ecb" id="imp-go">Import data</button><button class="ecl2" id="imp-cl">Cancel</button></div>
 </div></div>
 
-<div class="emod" id="hist-mod"><div class="ebox">
-  <h3>Check-in history</h3>
-  <div class="hist-list" id="hist-list"></div>
-  <div class="ebs"><button class="ecl2" id="hist-cl">Close</button></div>
-</div></div>
-
 <div class="sp" id="sp">
   <div class="set-menu" id="set-menu">
     <div class="smi" id="exp-btn"><span>⬇ Export data</span><span style="font-size:11px;color:var(--tm)">download JSON backup</span></div>
@@ -486,6 +390,7 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
     <div class="smi" data-panel="phases"><span>Phase Settings</span><span class="arr">›</span></div>
     <div class="smi" data-panel="library"><span>Exercise Library</span><span class="arr">›</span></div>
     <div class="smi" data-panel="cf"><span>Apple Watch Correction Factors</span><span class="arr">›</span></div>
+    <div class="smi" data-panel="ghsync"><span>GitHub Sync</span><span class="arr">›</span></div>
     <div class="smi" id="src-btn" style="cursor:pointer"><span>⧉ Copy HTML source</span><span style="font-size:11px;color:var(--tm)">for GitHub</span></div>
   </div>
   <div class="set-panel" id="set-phases">
@@ -510,6 +415,26 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
       <tr><td>Other</td><td><input class="cfi" type="number" id="cfo" min="0" max="50"> %</td><td style="font-size:11px;color:var(--tm);padding-left:10px">default −15%</td></tr>
     </table>
     <button class="abtn2" id="cfsv" style="margin-top:.75rem">Save factors</button>
+  </div>
+  <div class="set-panel" id="set-ghsync">
+    <button class="set-back" id="back-ghsync">‹ Settings</button>
+    <div class="sl">GitHub Sync</div>
+    <p style="font-size:12px;color:var(--ts);margin-bottom:.75rem;line-height:1.55">Push/pull your training data to a GitHub repo so it carries across devices. Use a fine-grained personal access token scoped to just this one repo, with "Contents: Read and write" permission. The token is stored only in this browser's local storage.</p>
+    <div class="sl">Personal access token</div>
+    <input class="fi" type="password" id="gh-token" placeholder="github_pat_…" autocomplete="off">
+    <div class="sl" style="margin-top:.65rem">Repository (owner/name)</div>
+    <input class="fi" type="text" id="gh-repo" placeholder="yourname/training-log-data">
+    <div class="sl" style="margin-top:.65rem">Branch</div>
+    <input class="fi" type="text" id="gh-branch" placeholder="main">
+    <div class="sl" style="margin-top:.65rem">File path in repo</div>
+    <input class="fi" type="text" id="gh-path" placeholder="training-log-data.json">
+    <button class="abtn2" id="gh-save-cfg" style="margin-top:.75rem">Save settings</button>
+    <div style="height:1px;background:var(--b1);margin:1rem 0"></div>
+    <div class="ebs">
+      <button class="ecb" id="gh-push">⬆ Push to GitHub</button>
+      <button class="ecb" id="gh-pull" style="background:var(--bg-section);color:var(--ts);border-color:var(--b1)">⬇ Pull from GitHub</button>
+    </div>
+    <div id="gh-status" style="font-size:11px;color:var(--tm);margin-top:.7rem;line-height:1.5"></div>
   </div>
 </div>
 
@@ -610,12 +535,11 @@ const CID=['biceps','chest','forearm','belly','waist','neck'],CLA=['Biceps','Che
 const HIST=[{date:'2026-02-12',biceps:36.5,chest:102.5,forearm:30.5,belly:92.0,waist:89.5,shoulders:119.0,butt:96.5,weight:77.1},{date:'2026-02-19',biceps:37.0,chest:102.5,forearm:30.5,belly:92.0,waist:89.5,shoulders:119.0,butt:96.5,weight:76.2},{date:'2026-03-06',biceps:37.5,chest:102.5,forearm:30.5,belly:89.5,waist:87.5,shoulders:118.0,butt:96.5,weight:75.9},{date:'2026-03-13',biceps:38.0,chest:101.5,forearm:30.5,belly:88.0,waist:86.5,shoulders:116.5,butt:96.5,weight:75.8},{date:'2026-03-20',biceps:38.5,chest:101.0,forearm:30.5,belly:87.0,waist:86.0,shoulders:116.5,butt:96.5,weight:75.5},{date:'2026-03-27',biceps:37.5,chest:100.0,forearm:30.5,belly:87.0,waist:86.0,shoulders:116.5,butt:96.5,weight:75.5},{date:'2026-04-03',biceps:37.5,chest:99.5,forearm:30.5,belly:86.0,waist:86.0,shoulders:116.5,butt:96.5,weight:75.5},{date:'2026-04-10',biceps:37.5,chest:100.0,forearm:30.5,belly:86.0,waist:85.5,shoulders:117.5,butt:96.5,weight:75.5},{date:'2026-04-21',biceps:37.5,chest:98.5,forearm:30.0,belly:85.5,waist:85.5,shoulders:113.5,butt:96.5,weight:74.6},{date:'2026-06-29',biceps:37.5,chest:98.5,forearm:31.0,belly:87.0,waist:87.0,shoulders:115.5,butt:97.3,weight:76.5}];
 
 let CW=1,CS='S1',SO=null,TW=12,CV='log',PS2='S1',wjMode='week';
-let DT={},CK={},SK={},RT={},NT={},DS={},SV={},OV={},PHASES=[],LIB=[],SEX={},MEAS={},ACT={},CF={...DEF_CF},WS={},CHK={};
+let DT={},CK={},SK={},RT={},NT={},DS={},SV={},OV={},PHASES=[],LIB=[],SEX={},MEAS={},ACT={},CF={...DEF_CF},WS={};
+let GHCFG={token:'',repo:'',branch:'main',path:'training-log-data.json'};
+try{GHCFG=JSON.parse(localStorage.getItem('cb42ghcfg')||'null')||GHCFG;}catch(e){}
 const UL=new Set();let CHT={};let APC=null;
 let measFilters={wt:'log',ci:'log',bf:'log'};
-const ENERGY_EMOJI=['😞','😕','😐','🙂','😄'];
-const ENERGY_LABELS=['fuck','ugh','meh','sweet','yeah!'];
-const ENERGY_COL=['#ef4444','#f97316','#f59e0b','#84cc16','#10b981'];
 
 function todayAMS(){const s=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Amsterdam',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const[y,m,d]=s.split('-');const dt=new Date(parseInt(y),parseInt(m)-1,parseInt(d));dt.setHours(0,0,0,0);return dt;}
 function isoAMS(dt){return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Amsterdam',year:'numeric',month:'2-digit',day:'2-digit'}).format(dt);}
@@ -642,7 +566,7 @@ function sxk(o,s){return o+'_'+s;}
 function lk(o,s){return o+'_'+s;}
 function isLk(o,s){return!!SV[o]&&o<tOff()&&!UL.has(lk(o,s));}
 function isR(o){return!!RT['r'+o];}
-function lbi(id){return LIB.find(e=>e.id===id)||{id,n:id,t:'',sets:3,r:''};}
+function lbi(id){return LIB.find(e=>e.id===id)||{id,n:id,t:'',sets:3,r:'',kg:null};}
 function gDS(s){return Object.keys(DS).map(o=>parseInt(o)).filter(o=>DS[o]===s&&!isR(o)).sort((a,b)=>b-a);}
 function wSk(o,s,id){return!!SK[skk(o,s,id)];}
 function gSEX(o,s){
@@ -681,18 +605,17 @@ function ld(){
       const sc=JSON.parse(localStorage.getItem(src+'cf')||'null')||{};CF={...DEF_CF};if(sc.Strength!=null)CF.Strength=sc.Strength;if(sc.Walking!=null)CF.Walking=sc.Walking;if(sc.Other!=null)CF.Other=sc.Other;
       const rs=JSON.parse(localStorage.getItem(src+'sex')||'null')||{};
       SEX=['cb42','cb41','cb40','cb39','cb38','cb37','cb36','cb35'].includes(src)?rs:migSEX(rs);
-      CHK=JSON.parse(localStorage.getItem(src+'chk')||'null')||{};
       if(!Object.keys(MEAS).length)seedM();applyPatches();persist();return;
     }catch(e){}}
   }
-  PHASES=DP;LIB=DL;SEX={};ACT={};CF={...DEF_CF};WS={};CHK={};seedM();persist();
+  PHASES=DP;LIB=DL;SEX={};ACT={};CF={...DEF_CF};WS={};seedM();persist();
 }
 function seedM(){HIST.forEach(r=>{const{date,...v}=r;MEAS[date]=v;});}
-function persist(){try{localStorage.setItem('cb42d',JSON.stringify(DT));localStorage.setItem('cb42ck',JSON.stringify(CK));localStorage.setItem('cb42sk',JSON.stringify(SK));localStorage.setItem('cb42r',JSON.stringify(RT));localStorage.setItem('cb42n',JSON.stringify(NT));localStorage.setItem('cb42ds',JSON.stringify(DS));localStorage.setItem('cb42sv',JSON.stringify(SV));localStorage.setItem('cb42ov',JSON.stringify(OV));localStorage.setItem('cb42ph',JSON.stringify(PHASES));localStorage.setItem('cb42lib',JSON.stringify(LIB));localStorage.setItem('cb42sex',JSON.stringify(SEX));localStorage.setItem('cb42wk',String(TW));localStorage.setItem('cb42meas',JSON.stringify(MEAS));localStorage.setItem('cb42act',JSON.stringify(ACT));localStorage.setItem('cb42cf',JSON.stringify(CF));localStorage.setItem('cb42ws',JSON.stringify(WS));localStorage.setItem('cb42chk',JSON.stringify(CHK));}catch(e){}}
+function persist(){try{localStorage.setItem('cb42d',JSON.stringify(DT));localStorage.setItem('cb42ck',JSON.stringify(CK));localStorage.setItem('cb42sk',JSON.stringify(SK));localStorage.setItem('cb42r',JSON.stringify(RT));localStorage.setItem('cb42n',JSON.stringify(NT));localStorage.setItem('cb42ds',JSON.stringify(DS));localStorage.setItem('cb42sv',JSON.stringify(SV));localStorage.setItem('cb42ov',JSON.stringify(OV));localStorage.setItem('cb42ph',JSON.stringify(PHASES));localStorage.setItem('cb42lib',JSON.stringify(LIB));localStorage.setItem('cb42sex',JSON.stringify(SEX));localStorage.setItem('cb42wk',String(TW));localStorage.setItem('cb42meas',JSON.stringify(MEAS));localStorage.setItem('cb42act',JSON.stringify(ACT));localStorage.setItem('cb42cf',JSON.stringify(CF));localStorage.setItem('cb42ws',JSON.stringify(WS));}catch(e){}}
 // Export/Import
 let _exportJson='';
 document.getElementById('exp-btn').addEventListener('click',()=>{
-  const data={DT,CK,SK,RT,NT,DS,SV,OV,PHASES,LIB,SEX,MEAS,ACT,CF,WS,CHK,exported:fISO(now())};
+  const data={DT,CK,SK,RT,NT,DS,SV,OV,PHASES,LIB,SEX,MEAS,ACT,CF,WS,exported:fISO(now())};
   _exportJson=JSON.stringify(data,null,2);
   document.getElementById('eta').value=_exportJson;
   document.getElementById('emod').classList.add('show');
@@ -710,7 +633,56 @@ document.getElementById('ecb').addEventListener('click',()=>{const ta=document.g
 document.getElementById('imp-btn').addEventListener('click',()=>{document.getElementById('imp-ta').value='';document.getElementById('imp-file').value='';document.getElementById('imod').classList.add('show');});
 document.getElementById('imp-cl').addEventListener('click',()=>document.getElementById('imod').classList.remove('show'));
 document.getElementById('imp-file').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{document.getElementById('imp-ta').value=e.target.result;};r.readAsText(f);});
-document.getElementById('imp-go').addEventListener('click',()=>{const raw=document.getElementById('imp-ta').value.trim();if(!raw){toast('No data');return;}try{const data=JSON.parse(raw);const km={DT:'d',CK:'ck',SK:'sk',RT:'r',NT:'n',DS:'ds',SV:'sv',OV:'ov',PHASES:'ph',LIB:'lib',SEX:'sex',MEAS:'meas',ACT:'act',CF:'cf',WS:'ws',CHK:'chk'};Object.keys(km).forEach(k=>{if(data[k]!==undefined)localStorage.setItem('cb42'+km[k],JSON.stringify(data[k]));});if(data.totalWeeks)localStorage.setItem('cb42wk',String(data.totalWeeks));document.getElementById('imod').classList.remove('show');ld();updMacro();jtt();showView('home');toast('Data imported');}catch(e){toast('Invalid JSON');}});
+document.getElementById('imp-go').addEventListener('click',()=>{const raw=document.getElementById('imp-ta').value.trim();if(!raw){toast('No data');return;}try{const data=JSON.parse(raw);const km={DT:'d',CK:'ck',SK:'sk',RT:'r',NT:'n',DS:'ds',SV:'sv',OV:'ov',PHASES:'ph',LIB:'lib',SEX:'sex',MEAS:'meas',ACT:'act',CF:'cf',WS:'ws'};Object.keys(km).forEach(k=>{if(data[k]!==undefined)localStorage.setItem('cb42'+km[k],JSON.stringify(data[k]));});if(data.totalWeeks)localStorage.setItem('cb42wk',String(data.totalWeeks));document.getElementById('imod').classList.remove('show');ld();updMacro();jtt();showView('home');toast('Data imported');}catch(e){toast('Invalid JSON');}});
+// GitHub Sync
+function b64EncUtf8(str){return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,(m,p1)=>String.fromCharCode('0x'+p1)));}
+function b64DecUtf8(str){return decodeURIComponent(atob(str.replace(/\s/g,'')).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));}
+function ghStatus(msg,isErr){const el=document.getElementById('gh-status');if(!el)return;el.textContent=msg;el.style.color=isErr?'var(--er-tx)':'var(--tm)';}
+document.getElementById('gh-save-cfg').addEventListener('click',()=>{
+  GHCFG.token=document.getElementById('gh-token').value.trim();
+  GHCFG.repo=document.getElementById('gh-repo').value.trim().replace(/^\/+|\/+$/g,'');
+  GHCFG.branch=document.getElementById('gh-branch').value.trim()||'main';
+  GHCFG.path=document.getElementById('gh-path').value.trim()||'training-log-data.json';
+  try{localStorage.setItem('cb42ghcfg',JSON.stringify(GHCFG));}catch(e){}
+  ghStatus('Settings saved.');
+});
+document.getElementById('gh-push').addEventListener('click',async()=>{
+  if(!GHCFG.token||!GHCFG.repo){ghStatus('Enter a token and repository first, then Save settings.',true);return;}
+  ghStatus('Pushing…');
+  try{
+    const data={DT,CK,SK,RT,NT,DS,SV,OV,PHASES,LIB,SEX,MEAS,ACT,CF,WS,exported:fISO(now())};
+    const content=b64EncUtf8(JSON.stringify(data,null,2));
+    const headers={'Authorization':'Bearer '+GHCFG.token,'Accept':'application/vnd.github+json'};
+    const getUrl='https://api.github.com/repos/'+GHCFG.repo+'/contents/'+encodeURIComponent(GHCFG.path)+'?ref='+encodeURIComponent(GHCFG.branch);
+    let sha=null;
+    const getRes=await fetch(getUrl,{headers});
+    if(getRes.status===200){const j=await getRes.json();sha=j.sha;}
+    else if(getRes.status!==404){const j=await getRes.json().catch(()=>({}));throw new Error(j.message||('Lookup failed ('+getRes.status+')'));}
+    const putUrl='https://api.github.com/repos/'+GHCFG.repo+'/contents/'+encodeURIComponent(GHCFG.path);
+    const body={message:'Training log sync — '+fISO(now()),content,branch:GHCFG.branch};
+    if(sha)body.sha=sha;
+    const putRes=await fetch(putUrl,{method:'PUT',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!putRes.ok){const j=await putRes.json().catch(()=>({}));throw new Error(j.message||('Push failed ('+putRes.status+')'));}
+    ghStatus('✓ Pushed successfully at '+new Date().toLocaleTimeString()+'.');
+  }catch(e){ghStatus('Push failed: '+e.message,true);}
+});
+document.getElementById('gh-pull').addEventListener('click',async()=>{
+  if(!GHCFG.token||!GHCFG.repo){ghStatus('Enter a token and repository first, then Save settings.',true);return;}
+  ghStatus('Pulling…');
+  try{
+    const headers={'Authorization':'Bearer '+GHCFG.token,'Accept':'application/vnd.github+json'};
+    const getUrl='https://api.github.com/repos/'+GHCFG.repo+'/contents/'+encodeURIComponent(GHCFG.path)+'?ref='+encodeURIComponent(GHCFG.branch);
+    const res=await fetch(getUrl,{headers});
+    if(res.status===404)throw new Error('File not found in that repo/branch — push from another device first.');
+    if(!res.ok){const j=await res.json().catch(()=>({}));throw new Error(j.message||('Pull failed ('+res.status+')'));}
+    const j=await res.json();
+    const data=JSON.parse(b64DecUtf8(j.content));
+    const km={DT:'d',CK:'ck',SK:'sk',RT:'r',NT:'n',DS:'ds',SV:'sv',OV:'ov',PHASES:'ph',LIB:'lib',SEX:'sex',MEAS:'meas',ACT:'act',CF:'cf',WS:'ws'};
+    Object.keys(km).forEach(k=>{if(data[k]!==undefined)localStorage.setItem('cb42'+km[k],JSON.stringify(data[k]));});
+    ld();updMacro();jtt();showView('home');
+    ghStatus('✓ Pulled successfully at '+new Date().toLocaleTimeString()+' (data exported '+(data.exported||'unknown')+').');
+  }catch(e){ghStatus('Pull failed: '+e.message,true);}
+});
 function toggleLeg(id){
   const wrap=document.getElementById(id);
   const span=document.getElementById(id+'-items');
@@ -736,10 +708,10 @@ function openSettings(){
   }
 }
 function showSetMenu(){document.getElementById('set-menu').style.display='';document.querySelectorAll('.set-panel').forEach(p=>p.classList.remove('open'));}
-function openSetPanel(id){document.getElementById('set-menu').style.display='none';document.querySelectorAll('.set-panel').forEach(p=>p.classList.remove('open'));document.getElementById('set-'+id).classList.add('open');if(id==='phases')rdrPT();if(id==='library')rdrLT();if(id==='cf'){document.getElementById('cfs').value=CF.Strength;document.getElementById('cfw').value=CF.Walking;document.getElementById('cfo').value=CF.Other;}}
+function openSetPanel(id){document.getElementById('set-menu').style.display='none';document.querySelectorAll('.set-panel').forEach(p=>p.classList.remove('open'));document.getElementById('set-'+id).classList.add('open');if(id==='phases')rdrPT();if(id==='library')rdrLT();if(id==='cf'){document.getElementById('cfs').value=CF.Strength;document.getElementById('cfw').value=CF.Walking;document.getElementById('cfo').value=CF.Other;}if(id==='ghsync'){document.getElementById('gh-token').value=GHCFG.token;document.getElementById('gh-repo').value=GHCFG.repo;document.getElementById('gh-branch').value=GHCFG.branch;document.getElementById('gh-path').value=GHCFG.path;}}
 document.getElementById('set-btn').addEventListener('click',openSettings);
 document.querySelectorAll('.smi[data-panel]').forEach(item=>item.addEventListener('click',()=>openSetPanel(item.dataset.panel)));
-['phases','library','cf'].forEach(id=>document.getElementById('back-'+id).addEventListener('click',showSetMenu));
+['phases','library','cf','ghsync'].forEach(id=>document.getElementById('back-'+id).addEventListener('click',showSetMenu));
 document.getElementById('cfsv').addEventListener('click',()=>{CF.Strength=parseInt(document.getElementById('cfs').value)||DEF_CF.Strength;CF.Walking=parseInt(document.getElementById('cfw').value)||DEF_CF.Walking;CF.Other=parseInt(document.getElementById('cfo').value)||DEF_CF.Other;persist();toast('Saved');});
 function rdrPT(){const tb=document.getElementById('ptb');tb.innerHTML='';const sorted=[...PHASES].sort((a,b)=>new Date(a.start)-new Date(b.start));sorted.forEach((ph,i)=>{const c=PC[i%PC.length];const tr=document.createElement('tr');tr.innerHTML=`<td><input class="fi" type="text" value="${ph.label}" data-i="${i}" data-f="label" style="border-left:3px solid ${c}"></td><td><input class="fi" type="date" value="${ph.start}" data-i="${i}" data-f="start"></td><td><input class="fi" type="number" value="${ph.kcal}" data-i="${i}" data-f="kcal"></td><td><input class="fi" type="number" value="${ph.p}" data-i="${i}" data-f="p"></td><td><input class="fi" type="number" value="${ph.f}" data-i="${i}" data-f="f"></td><td><input class="fi" type="number" value="${ph.c}" data-i="${i}" data-f="c"></td><td><button class="db" data-i="${i}">✕</button></td>`;tb.appendChild(tr);tr.querySelectorAll('input').forEach(inp=>{inp.addEventListener('change',()=>{const ph2=PHASES[PHASES.indexOf(sorted[parseInt(inp.dataset.i)])];if(!ph2)return;const f=inp.dataset.f;ph2[f]=f==='label'||f==='start'?inp.value:parseInt(inp.value)||0;persist();updMacro();rdrW();});});tr.querySelector('.db').addEventListener('click',function(){PHASES.splice(PHASES.indexOf(sorted[parseInt(this.dataset.i)]),1);persist();updMacro();rdrPT();rdrW();});});}
 document.getElementById('apb').addEventListener('click',()=>{PHASES.push({label:'New phase',start:fISO(now()),kcal:2000,p:160,f:70,c:180});persist();rdrPT();updMacro();rdrW();});
@@ -810,7 +782,14 @@ function jtt(){const to=tOff();CW=Math.max(1,o2w(to));SO=to;if(!isR(to)&&DS[to])
 function rdrSA(){
   const area=document.getElementById('sa');const o=aOff();area.innerHTML='';
   if(isR(o)){
-    const rdb=document.createElement('div');rdb.className='rdb';rdb.style.cssText='margin:1rem 1.25rem';rdb.innerHTML='<div style="font-size:28px;opacity:.22">🌙</div><div style="font-size:13px;color:var(--ts);font-weight:500">Rest day</div><div style="font-size:11px;color:var(--tm)">'+fmt(dfo(o))+'</div>';area.appendChild(rdb);
+    const rdb=document.createElement('div');rdb.className='rdb';rdb.style.cssText='margin:1rem 1.25rem';rdb.innerHTML='<div style="font-size:28px;opacity:.22">🌙</div><div style="font-size:13px;color:var(--ts);font-weight:500">Rest day</div><div style="font-size:11px;color:var(--tm)">'+fmt(dfo(o))+'</div>';
+    const stbsD=document.createElement('div');stbsD.className='stbs';stbsD.style.cssText='margin-top:.85rem;justify-content:center';
+    ['S1','S2','S3','S4'].forEach(id=>{const b=document.createElement('button');b.className='stb '+id.toLowerCase();b.textContent=id;b.addEventListener('click',()=>{CS=id;delete RT['r'+o];DS[o]=id;persist();rdrS();rdrSA();});stbsD.appendChild(b);});
+    const rb2=document.createElement('button');rb2.className='stb act';rb2.textContent='Rest';rb2.style.cssText='border-color:#c8897a;color:#c8897a;background:color-mix(in srgb,#c8897a 12%,transparent)';
+    rb2.addEventListener('click',()=>{delete RT['r'+o];persist();rdrS();rdrSA();});
+    stbsD.appendChild(rb2);
+    rdb.appendChild(stbsD);
+    area.appendChild(rdb);
     const aw=document.createElement('div');aw.className='act-w';rdrAct(aw,o);area.appendChild(aw);return;
   }
   const wrapper=document.createElement('div');wrapper.className='sess-a';area.appendChild(wrapper);
@@ -840,7 +819,29 @@ function rdrSA(){
   if(!lkd){const aeb=document.createElement('button');aeb.className='add-ex';aeb.style.marginTop='0';aeb.textContent='+ Add exercise';aeb.addEventListener('click',addExRow);const ntb=document.createElement('button');ntb.className='add-ex';ntb.style.marginTop='0';ntb.textContent='＋ Session note';if(existingNote)ntb.style.display='none';ntb.addEventListener('click',()=>{nta.style.display='block';nta.focus();ntb.style.display='none';});const ar=document.createElement('div');ar.className='ar';const svb=document.createElement('button');svb.className='svb';svb.textContent='Save session';svb.addEventListener('click',saveS);ar.appendChild(svb);ar.appendChild(aeb);ar.appendChild(ntb);
     // Set as default — saves current exercise list as the default for this session type
     const dfb=document.createElement('button');dfb.className='add-ex';dfb.style.cssText='margin-top:0;border-style:dashed;opacity:.6';dfb.textContent='⊙ Set as default for '+CS;
-    dfb.addEventListener('click',()=>{const ids=gSEX(aOff(),CS).filter(id=>id&&!id.startsWith('__new__'));setDefaultSEX(CS,ids);toast('Default list updated for '+CS);});
+    dfb.addEventListener('click',()=>{
+      const o=aOff();
+      const rawIds=gSEX(o,CS);
+      const cleanIds=rawIds.filter(id=>id&&!id.startsWith('__new__'));
+      setDefaultSEX(CS,cleanIds);
+      rawIds.forEach((id,idx)=>{
+        if(!id||id.startsWith('__new__'))return;
+        const wi=document.querySelector('[data-eid="'+id+'"][data-f="w"]');
+        const ri=document.querySelector('[data-eid="'+id+'"][data-f="r"]');
+        const si=document.querySelector('[data-field="sets"][data-idx="'+idx+'"]');
+        const wv=wi&&wi.value!==''?parseFloat(wi.value):null;
+        const rv=ri&&ri.value!==''?ri.value:null;
+        const sv=si&&si.value!==''?parseInt(si.value):null;
+        const libItem=LIB.find(e=>e.id===id);
+        if(libItem){
+          if(sv!=null)libItem.sets=sv;
+          if(rv!=null)libItem.r=rv;
+          if(wv!=null)libItem.kg=wv;
+        }
+      });
+      persist();
+      toast('Default updated for '+CS+' — list, sets, reps & weight');
+    });
     ar.appendChild(dfb);wrapper.appendChild(ar);}
   rdrTable();updBadge();
   const sdivEl=document.createElement('div');sdivEl.className='sdiv';area.appendChild(sdivEl);
@@ -893,8 +894,9 @@ function rdrTable(){
     const isN=id.startsWith('__new__');const ex=isN?null:lbi(id);
     const sv2=isN?[null,null]:(DT[dkd(o,CS,id)]||[null,null]);
     const ll=(!isN&&sv2[0]===null&&sv2[1]===null)?getLst(id,o,CS):null;
-    const fw=sv2[0]!==null?sv2[0]:(ll?ll.wt:null);const fr=sv2[1]!==null?sv2[1]:(ll?ll.rp:null);
-    const isPre=(sv2[0]===null&&sv2[1]===null&&ll!==null);
+    const libDefKg=(!isN&&ex&&ex.kg!=null)?ex.kg:null;
+    const fw=sv2[0]!==null?sv2[0]:(ll?ll.wt:libDefKg);const fr=sv2[1]!==null?sv2[1]:(ll?ll.rp:null);
+    const isPre=(sv2[0]===null&&sv2[1]===null&&(ll!==null||libDefKg!==null));
     const prv=isN?null:getPrv(CS,id,o);const isOn=isN?false:!!CK[ckk(o,CS,id)];const isSk=isN?false:!!SK[skk(o,CS,id)];
     const cS=gCS(o,CS,id);const cR=gCR(o,CS,id);
     let fa=[];if(!isN){if(isSk)fa=[{c:'fn',l:'skipped'}];else if(sv2[0]!==null&&sv2[1]!==null&&prv)fa=gF(sv2[0],sv2[1],cS,prv.wt,prv.rp,prv.sets||3,cR);else if(sv2[0]!==null||sv2[1]!==null)fa=[{c:'fn',l:'baseline'}];else if(isPre)fa=[{c:'fn',l:'prev'}];else fa=[{c:'fn',l:'—'}];}
@@ -1307,16 +1309,18 @@ function rdrMeas(){rdrBFG();rdrBFC('bfsp','bfsd','bfsc',e=>e.bf_scale!=null?e.bf
 // Week Summary
 function buildCalChart(el){
   if(!window.Chart)return;
-  // S1/S2/S3 tracked individually for the per-type lines; S4 (free session) is folded
-  // into Total only, so Total matches the "Active Calories" stat tile above, which sums
-  // every logged day regardless of session type.
+  // S1/S2/S3 tracked individually for the per-type lines. S4 (free session) AND any day
+  // with logged calories but no session type assigned at all are folded into Total only
+  // (no dedicated line), so Total matches the "Active Calories" stat tile above, which
+  // sums every logged day regardless of session assignment.
   const byP={};const to=tOff();
   for(let o=0;o<TW*7;o++){
     if(o>to)continue;const t=gDT(o);if(!t||!t.ca)continue;
-    const sess=DS[o];if(!sess)continue;
+    const sess=DS[o];
     let period=wjMode==='week'?'W'+o2w(o):(()=>{const d=dfo(o);return MN[d.getMonth()]+' '+d.getFullYear();})();
-    if(!byP[period])byP[period]={S1:0,S2:0,S3:0,S4:0};
-    if(byP[period][sess]!==undefined)byP[period][sess]+=t.ca;
+    if(!byP[period])byP[period]={S1:0,S2:0,S3:0,S4:0,UN:0};
+    if(sess&&byP[period][sess]!==undefined)byP[period][sess]+=t.ca;
+    else byP[period].UN+=t.ca;
   }
   const labels=Object.keys(byP);
   const calRow=document.getElementById('wj-cal-row');if(!calRow)return;
@@ -1326,7 +1330,8 @@ function buildCalChart(el){
   const s2d=labels.map(p=>byP[p]&&byP[p].S2?byP[p].S2:null);
   const s3d=labels.map(p=>byP[p]&&byP[p].S3?byP[p].S3:null);
   const s4d=labels.map(p=>byP[p]&&byP[p].S4?byP[p].S4:null);
-  const totd=labels.map((_,i)=>{const a=s1d[i]||0,b=s2d[i]||0,c=s3d[i]||0,d=s4d[i]||0;return a+b+c+d>0?a+b+c+d:null;});
+  const und=labels.map(p=>byP[p]&&byP[p].UN?byP[p].UN:null);
+  const totd=labels.map((_,i)=>{const a=s1d[i]||0,b=s2d[i]||0,c=s3d[i]||0,d=s4d[i]||0,e=und[i]||0;return a+b+c+d+e>0?a+b+c+d+e:null;});
   const datasets=[
     {label:'S1 '+SM.S1.d.split(' · ')[0],data:s1d,borderColor:SC.S1,backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,spanGaps:false},
     {label:'S2 '+SM.S2.d.split(' · ')[0],data:s2d,borderColor:SC.S2,backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,spanGaps:false},
@@ -1334,36 +1339,6 @@ function buildCalChart(el){
     {label:'Total',data:totd,borderColor:'#52525b',backgroundColor:'transparent',borderWidth:2,borderDash:[5,3],pointRadius:3,tension:0.3,spanGaps:false},
   ];
   mountChartRow(calRow,'wj-cal-canvas',datasets,' kcal',labels,180,{pxPerPt:60,beginAtZero:true});
-}
-function rdrWeekMacroStrip(container,weekStart){
-  const wrap=document.createElement('div');wrap.className='wk-mac-wrap';
-  const title=document.createElement('div');title.className='wj-tl';title.textContent='Macro adherence this week';
-  wrap.appendChild(title);
-  let onTrack=0,total=0;
-  for(let i=0;i<7;i++){
-    const o=weekStart+i;
-    const dph=phFor(dfo(o));
-    const nextEntry=CHK[fISO(dfo(o+1))]||{};
-    const fields=[{k:'kcal',t:dph?dph.kcal:null},{k:'p',t:dph?dph.p:null},{k:'f',t:dph?dph.f:null},{k:'c',t:dph?dph.c:null}];
-    fields.forEach(f=>{
-      const v=nextEntry[f.k];
-      if(v===undefined||v===null||!f.t)return;
-      total++;
-      if(macroStatus(v,f.t)==='green')onTrack++;
-    });
-  }
-  const pct=total>0?Math.round(onTrack/total*100):0;
-  const barCol=total===0?'var(--b1)':(pct>=80?'var(--ok-tx)':(pct>=50?'var(--wn-tx)':'var(--er-tx)'));
-  const hero=document.createElement('div');hero.className='wk-mac-hero';
-  const pctEl=document.createElement('div');pctEl.className='wk-mac-pct';pctEl.style.color=total===0?'var(--tm)':'var(--tx)';pctEl.textContent=total>0?pct+'%':'—';
-  const subEl=document.createElement('div');subEl.className='wk-mac-sub';subEl.textContent=total>0?(onTrack+' of '+total+' macro-checks on track'):'No macro data logged yet this week';
-  hero.appendChild(pctEl);hero.appendChild(subEl);
-  wrap.appendChild(hero);
-  const bar=document.createElement('div');bar.className='wk-mac-bar';
-  const fill=document.createElement('div');fill.className='wk-mac-bar-fill';fill.style.width=(total>0?pct:0)+'%';fill.style.background=barCol;
-  bar.appendChild(fill);
-  wrap.appendChild(bar);
-  container.appendChild(wrap);
 }
 function rdrWeek(){
   const el=document.getElementById('wc2');el.innerHTML='';
@@ -1384,11 +1359,10 @@ function rdrWeek(){
   el.appendChild(wkSelHdr);
   // Weekly calorie total stat tile
   const wkStart=w2o(CW);const wkEnd=Math.min(wkStart+6,TW*7-1);
-  let wkTotal=0;for(let o=wkStart;o<=wkEnd;o++){const t=gDT(o);if(t&&t.ca)wkTotal+=t.ca;}
+  let wkTotal=0;for(let o=wkStart;o<=wkEnd;o++){if(o>tOff())continue;const t=gDT(o);if(t&&t.ca)wkTotal+=t.ca;}
   const statTile=document.createElement('div');statTile.style.cssText='display:inline-flex;flex-direction:column;gap:2px;padding:.55rem .85rem;background:color-mix(in srgb,var(--ao) 7%,var(--bg-section));border:1px solid color-mix(in srgb,var(--ao) 20%,var(--b1));border-radius:var(--r1);margin-bottom:.85rem';
   statTile.innerHTML='<div class="atol">🔥 Week W'+CW+' · Active Calories</div><div class="atov">'+(wkTotal>0?wkTotal.toLocaleString()+' kcal':'—')+'</div>';
   el.appendChild(statTile);
-  rdrWeekMacroStrip(el,wkStart);
   // Calorie chart
   const cw=document.createElement('div');cw.className='wj-cw';
   const tr2=document.createElement('div');tr2.className='wj-tr';
@@ -1465,216 +1439,35 @@ function rdrWeek(){
   }
 }
 // ── Morning Check-in (Home) ──────────────────────────────────────────────
-function getCHK(d){return CHK[d]||{};}
-function setCHKField(d,field,val){if(!CHK[d])CHK[d]={};CHK[d][field]=val;persist();}
-function macroStatus(actual,target){
-  if(actual===null||actual===undefined||actual===''||isNaN(actual)||!target)return null;
-  const dev=Math.abs(actual-target)/target;
-  if(dev<=0.05)return 'green';
-  if(dev<=0.15)return 'amber';
-  return 'red';
-}
-function openHistModal(){
-  const list=document.getElementById('hist-list');list.innerHTML='';
-  const dates=Object.keys(CHK).filter(d=>{
-    const e=CHK[d];
-    return e&&(e.kcal!=null||e.p!=null||e.f!=null||e.c!=null||e.sleep||e.energy||e.notes);
-  }).sort((a,b)=>b.localeCompare(a));
-  if(!dates.length){
-    list.innerHTML='<div class="hist-empty">No check-ins logged yet.</div>';
-  }else{
-    dates.forEach(d=>{
-      const e=CHK[d];
-      const checkinOff=isoToOff(d);
-      const dph=phFor(dfo(checkinOff-1));
-      const row=document.createElement('div');row.className='hist-row';
-      const dateEl=document.createElement('div');dateEl.className='hist-date';dateEl.textContent=fmtDM(checkinOff);
-      const dotsEl=document.createElement('div');dotsEl.className='hist-dots';
-      ['kcal','p','f','c'].forEach(k=>{
-        const v=e[k];
-        const t=dph?dph[k]:null;
-        const st=macroStatus(v===undefined?null:v,t)||'gray';
-        const dot=document.createElement('div');dot.className='hist-dot '+st;
-        dotsEl.appendChild(dot);
-      });
-      const sleepEl=document.createElement('div');sleepEl.className='hist-sleep'+(e.sleep==='under'?' red':e.sleep==='over'?' green':'');
-      sleepEl.textContent=e.sleep==='under'?'<6h':e.sleep==='over'?'6h+':'—';
-      const energyEl=document.createElement('div');energyEl.className='hist-energy';energyEl.textContent=e.energy?ENERGY_EMOJI[e.energy-1]:'—';
-      row.appendChild(dateEl);row.appendChild(dotsEl);row.appendChild(sleepEl);row.appendChild(energyEl);
-      if(e.notes){const noteEl=document.createElement('div');noteEl.className='hist-note';noteEl.textContent='📝';row.appendChild(noteEl);}
-      list.appendChild(row);
-    });
-  }
-  document.getElementById('hist-mod').classList.add('show');
-}
-document.getElementById('hist-cl').addEventListener('click',()=>document.getElementById('hist-mod').classList.remove('show'));
-function rdrHome(){
-  const el=document.getElementById('home-content');if(!el)return;
-  const todayISO=fISO(now());
-  const yestDate=dfo(tOff()-1);
-  const yPh=phFor(yestDate);
-  const entry=getCHK(todayISO);
-  el.innerHTML='';
-  let confirmBtn=null;
-  function resetConfirm(){
-    if(entry.confirmed){
-      entry.confirmed=false;setCHKField(todayISO,'confirmed',false);
-      if(confirmBtn){confirmBtn.textContent='Confirm check-in';confirmBtn.classList.remove('done');}
-    }
-  }
-
-  const dateEl=document.createElement('div');dateEl.className='hk-date';dateEl.textContent=fmt(now());
-  const histBtn=document.createElement('button');histBtn.className='hk-hist-btn';histBtn.textContent='History';histBtn.addEventListener('click',openHistModal);
-  const hdrRow=document.createElement('div');hdrRow.className='hk-hdr-row';hdrRow.appendChild(dateEl);hdrRow.appendChild(histBtn);
-  el.appendChild(hdrRow);
-
-  if(entry.confirmed){
-    const doneWrap=document.createElement('div');doneWrap.className='hk-done';
-    const icon=document.createElement('div');icon.className='hk-done-icon';icon.textContent='✓';
-    const txt=document.createElement('div');txt.className='hk-done-txt';txt.textContent='Checked in for today';
-    const editBtn=document.createElement('button');editBtn.className='hk-done-edit';editBtn.textContent='Edit';
-    editBtn.addEventListener('click',()=>{entry.confirmed=false;setCHKField(todayISO,'confirmed',false);rdrHome();});
-    doneWrap.appendChild(icon);doneWrap.appendChild(txt);doneWrap.appendChild(editBtn);
-    el.appendChild(doneWrap);
-    return;
-  }
-
-  const greetEl=document.createElement('div');greetEl.className='hk-greet';greetEl.textContent='Morning check-in';
-  el.appendChild(greetEl);
-
-  // Macros — yesterday's actuals vs yesterday's target
-  const macroSec=document.createElement('div');macroSec.className='hk-sec';
-  const mTitle=document.createElement('div');mTitle.className='hk-sec-t';mTitle.textContent='Macros — yesterday';
-  macroSec.appendChild(mTitle);
-  if(yPh){
-    const tgt=document.createElement('div');tgt.className='hk-target';tgt.textContent='Target: '+yPh.kcal+' kcal · '+yPh.p+'P · '+yPh.f+'F · '+yPh.c+'C';
-    macroSec.appendChild(tgt);
-  }
-  const grid=document.createElement('div');grid.className='hk-macro-grid';
-  const macros=[{k:'kcal',lbl:'kcal',tgt:yPh?yPh.kcal:null},{k:'p',lbl:'Protein',tgt:yPh?yPh.p:null},{k:'f',lbl:'Fat',tgt:yPh?yPh.f:null},{k:'c',lbl:'Carbs',tgt:yPh?yPh.c:null}];
-  macros.forEach(m=>{
-    const val=entry[m.k]!==undefined&&entry[m.k]!==null?entry[m.k]:'';
-    const status=macroStatus(val===''?null:val,m.tgt);
-    const chip=document.createElement('div');chip.className='hk-mchip'+(status?' '+status:'');
-    const inp=document.createElement('input');inp.type='number';inp.className='hk-min';inp.placeholder='—';inp.value=val;inp.min='0';
-    inp.addEventListener('input',()=>{
-      const v=inp.value===''?null:parseFloat(inp.value);
-      setCHKField(todayISO,m.k,v);
-      const st=macroStatus(v,m.tgt);
-      chip.className='hk-mchip'+(st?' '+st:'');
-      resetConfirm();
-    });
-    const lbl=document.createElement('div');lbl.className='hk-mlbl';lbl.textContent=m.lbl;
-    chip.appendChild(inp);chip.appendChild(lbl);
-    grid.appendChild(chip);
-  });
-  macroSec.appendChild(grid);
-  el.appendChild(macroSec);
-
-  // Sleep — binary pill
-  const sleepSec=document.createElement('div');sleepSec.className='hk-sec';
-  const sTitle=document.createElement('div');sTitle.className='hk-sec-t';sTitle.textContent='Sleep';
-  sleepSec.appendChild(sTitle);
-  const pills=document.createElement('div');pills.className='hk-sleep-pills';
-  const sOpts=[{v:'under',l:'< 6h',cls:'sel-red'},{v:'over',l:'6h +',cls:'sel-green'}];
-  const pillEls=[];
-  sOpts.forEach((o,i)=>{
-    const p=document.createElement('div');p.className='hk-spill'+(entry.sleep===o.v?' '+o.cls:'');p.textContent=o.l;
-    p.addEventListener('click',()=>{
-      const nv=entry.sleep===o.v?null:o.v;
-      entry.sleep=nv;
-      setCHKField(todayISO,'sleep',nv);
-      pillEls.forEach((pe,idx)=>{pe.className='hk-spill'+(nv===sOpts[idx].v?' '+sOpts[idx].cls:'');});
-      resetConfirm();
-    });
-    pillEls.push(p);
-    pills.appendChild(p);
-  });
-  sleepSec.appendChild(pills);
-  el.appendChild(sleepSec);
-
-  // Energy — emoji tick bar with labels
-  const energySec=document.createElement('div');energySec.className='hk-sec';
-  const eTitle=document.createElement('div');eTitle.className='hk-sec-t';eTitle.textContent='Energy';
-  energySec.appendChild(eTitle);
-  const ebarWrap=document.createElement('div');ebarWrap.className='hk-ebar-wrap';
-  const track=document.createElement('div');track.className='hk-ebar-track';
-  const fill=document.createElement('div');fill.className='hk-ebar-fill';
-  const curLevel=entry.energy||0;
-  fill.style.width=(curLevel?(curLevel/5*100):0)+'%';
-  fill.style.background=curLevel?ENERGY_COL[curLevel-1]:'var(--b1)';
-  track.appendChild(fill);
-  ebarWrap.appendChild(track);
-  const ticks=[];const tlabels=[];
-  for(let i=1;i<=5;i++){
-    const tick=document.createElement('div');tick.className='hk-etick'+(curLevel===i?' sel':'');
-    tick.style.left=((i-0.5)/5*100)+'%';
-    tick.textContent=ENERGY_EMOJI[i-1];
-    if(curLevel===i)tick.style.borderColor=ENERGY_COL[i-1];
-    const tlabel=document.createElement('div');tlabel.className='hk-etick-lbl'+(curLevel===i?' sel':'');
-    tlabel.style.left=((i-0.5)/5*100)+'%';
-    tlabel.textContent=ENERGY_LABELS[i-1];
-    const selectLevel=()=>{
-      entry.energy=i;
-      setCHKField(todayISO,'energy',i);
-      fill.style.width=(i/5*100)+'%';
-      fill.style.background=ENERGY_COL[i-1];
-      ticks.forEach((t,idx)=>{const lvl=idx+1;t.classList.toggle('sel',lvl===i);t.style.borderColor=lvl===i?ENERGY_COL[i-1]:'';});
-      tlabels.forEach((t,idx)=>{t.classList.toggle('sel',idx+1===i);});
-      resetConfirm();
-    };
-    tick.addEventListener('click',selectLevel);
-    tlabel.addEventListener('click',selectLevel);
-    ticks.push(tick);tlabels.push(tlabel);
-    ebarWrap.appendChild(tick);
-    ebarWrap.appendChild(tlabel);
-  }
-  energySec.appendChild(ebarWrap);
-  el.appendChild(energySec);
-
-  // Notes — optional, collapsed by default
-  const notesSec=document.createElement('div');notesSec.className='hk-sec';
-  const existingNote=entry.notes||'';
-  const notesTa=document.createElement('textarea');notesTa.className='nt';notesTa.placeholder='Anything else? (optional)';notesTa.style.display=existingNote?'block':'none';notesTa.value=existingNote;
-  notesTa.addEventListener('input',()=>{setCHKField(todayISO,'notes',notesTa.value);resetConfirm();});
-  const notesBtn=document.createElement('button');notesBtn.className='add-ex';notesBtn.style.marginTop='0';notesBtn.textContent='＋ Add note';
-  if(existingNote)notesBtn.style.display='none';
-  notesBtn.addEventListener('click',()=>{notesTa.style.display='block';notesTa.focus();notesBtn.style.display='none';});
-  notesSec.appendChild(notesTa);notesSec.appendChild(notesBtn);
-  el.appendChild(notesSec);
-
-  // Confirm / save
-  const confirmSec=document.createElement('div');confirmSec.className='hk-sec';
-  confirmBtn=document.createElement('button');
-  confirmBtn.className='hk-confirm'+(entry.confirmed?' done':'');
-  confirmBtn.textContent=entry.confirmed?'✓ Checked in':'Confirm check-in';
-  confirmBtn.addEventListener('click',()=>{
-    if(entry.confirmed)return;
-    entry.confirmed=true;
-    setCHKField(todayISO,'confirmed',true);
-    rdrHome();
-    toast('Check-in saved');
-  });
-  confirmSec.appendChild(confirmBtn);
-  el.appendChild(confirmSec);
-}
 function greetingText(){
   const h=new Date().getHours();
   if(h<12)return 'Good morning';
   if(h<18)return 'Good afternoon';
   return 'Good evening';
 }
-function showOverlay(){
-  document.getElementById('ov-greet').textContent=greetingText()+', Ben';
-  document.getElementById('ov-date').textContent=fmt(now());
-  document.getElementById('hello-ov').classList.add('show');
+function rdrHome(){
+  const el=document.getElementById('home-content');if(!el)return;
+  el.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='home-landing';
+  wrap.innerHTML=`<svg class="hello-sun" viewBox="0 0 100 100" width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="17" stroke="var(--aa)" stroke-width="4"/>
+    <g stroke="var(--aa)" stroke-width="4" stroke-linecap="round">
+      <line x1="50" y1="6" x2="50" y2="18"/>
+      <line x1="50" y1="82" x2="50" y2="94"/>
+      <line x1="6" y1="50" x2="18" y2="50"/>
+      <line x1="82" y1="50" x2="94" y2="50"/>
+      <line x1="19" y1="19" x2="27" y2="27"/>
+      <line x1="73" y1="73" x2="81" y2="81"/>
+      <line x1="81" y1="19" x2="73" y2="27"/>
+      <line x1="27" y1="73" x2="19" y2="81"/>
+    </g>
+  </svg>
+  <div class="hk-date">${fmt(now())}</div>
+  <div class="hk-greet">${greetingText()}, Ben</div>`;
+  el.appendChild(wrap);
 }
-function hideOverlay(){document.getElementById('hello-ov').classList.remove('show');}
-document.getElementById('ov-begin').addEventListener('click',hideOverlay);
-document.getElementById('hello-ov').addEventListener('click',e=>{if(e.target.id==='hello-ov')hideOverlay();});
 function toast(msg){const t=document.getElementById('tst');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 ld();updMacro();jtt();showView('home');
-if(!getCHK(fISO(now())).confirmed)showOverlay();
 </script>
 </body>
 </html>
