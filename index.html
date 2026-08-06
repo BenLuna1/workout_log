@@ -119,7 +119,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .wts::-webkit-scrollbar{display:none}
 .wts.scrolling{-webkit-mask-image:linear-gradient(to right,transparent 0,black 24px,black calc(100% - 24px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,black 24px,black calc(100% - 24px),transparent 100%)}
 .wb{font-size:11px;padding:3px 9px;border-radius:var(--r1);border:1.5px solid var(--b1);background:transparent;color:var(--ts);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;font-weight:500}
-.wb.past{opacity:.38}
+.wb.past{border-color:var(--b1);color:var(--tm)}
+.wb.future{opacity:.4}
 .wb:hover{background:var(--bg-card);color:var(--tx)}
 .wb.aw{font-weight:700}
 /* Session */
@@ -337,17 +338,8 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
 /* Toast */
 .toast{position:fixed;bottom:18px;right:18px;font-size:13px;padding:8px 16px;border-radius:var(--r1);background:var(--ok-bg);color:var(--ok-tx);border:1px solid var(--ok-bd);opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;font-weight:500}
 .toast.show{opacity:1}
-#hv,#lv,#pv,#mv,#wv{display:none}
-#hv.open,#lv.open,#pv.open,#mv.open,#wv.open{display:block}
-/* Home / Morning Check-in */
-.hk-date{font-size:11px;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.hk-greet{font-size:20px;font-weight:700;color:var(--tx);margin-top:2px;letter-spacing:-.02em}
-.home-landing{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3.5rem 1rem;text-align:center;gap:.35rem}
-.hello-sun{margin-bottom:.2rem}
-.hello-sun circle{animation:sun-pulse 3.2s ease-in-out infinite}
-.hello-sun g{animation:sun-glow 3.2s ease-in-out infinite}
-@keyframes sun-pulse{0%,100%{opacity:1}50%{opacity:.7}}
-@keyframes sun-glow{0%,100%{opacity:1}50%{opacity:.45}}
+#lv,#pv,#mv,#wv{display:none}
+#lv.open,#pv.open,#mv.open,#wv.open{display:block}
 </style>
 </head>
 <body>
@@ -439,15 +431,12 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
 </div>
 
 <div class="nav">
-  <button class="home-btn" id="home-btn" title="Home">⌂</button>
+  <button class="home-btn" id="home-btn" title="Go to today">⌂</button>
   <div class="nav-sep"></div>
-  <button class="vt" id="vt-log">Training Log</button>
   <button class="vt" id="vt-prog">Progression</button>
   <button class="vt" id="vt-meas">Measurements</button>
   <button class="vt" id="vt-week">Week Summary</button>
 </div>
-
-<div id="hv"><div class="vp" id="home-content"></div></div>
 
 <div id="lv">
   <div class="rib-w"><div class="rib-s" id="rib-s"><div class="sg" id="sg"></div></div></div>
@@ -633,7 +622,7 @@ document.getElementById('ecb').addEventListener('click',()=>{const ta=document.g
 document.getElementById('imp-btn').addEventListener('click',()=>{document.getElementById('imp-ta').value='';document.getElementById('imp-file').value='';document.getElementById('imod').classList.add('show');});
 document.getElementById('imp-cl').addEventListener('click',()=>document.getElementById('imod').classList.remove('show'));
 document.getElementById('imp-file').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{document.getElementById('imp-ta').value=e.target.result;};r.readAsText(f);});
-document.getElementById('imp-go').addEventListener('click',()=>{const raw=document.getElementById('imp-ta').value.trim();if(!raw){toast('No data');return;}try{const data=JSON.parse(raw);const km={DT:'d',CK:'ck',SK:'sk',RT:'r',NT:'n',DS:'ds',SV:'sv',OV:'ov',PHASES:'ph',LIB:'lib',SEX:'sex',MEAS:'meas',ACT:'act',CF:'cf',WS:'ws'};Object.keys(km).forEach(k=>{if(data[k]!==undefined)localStorage.setItem('cb42'+km[k],JSON.stringify(data[k]));});if(data.totalWeeks)localStorage.setItem('cb42wk',String(data.totalWeeks));document.getElementById('imod').classList.remove('show');ld();updMacro();jtt();showView('home');toast('Data imported');}catch(e){toast('Invalid JSON');}});
+document.getElementById('imp-go').addEventListener('click',()=>{const raw=document.getElementById('imp-ta').value.trim();if(!raw){toast('No data');return;}try{const data=JSON.parse(raw);const km={DT:'d',CK:'ck',SK:'sk',RT:'r',NT:'n',DS:'ds',SV:'sv',OV:'ov',PHASES:'ph',LIB:'lib',SEX:'sex',MEAS:'meas',ACT:'act',CF:'cf',WS:'ws'};Object.keys(km).forEach(k=>{if(data[k]!==undefined)localStorage.setItem('cb42'+km[k],JSON.stringify(data[k]));});if(data.totalWeeks)localStorage.setItem('cb42wk',String(data.totalWeeks));document.getElementById('imod').classList.remove('show');ld();updMacro();jtt();toast('Data imported');}catch(e){toast('Invalid JSON');}});
 // GitHub Sync
 function b64EncUtf8(str){return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,(m,p1)=>String.fromCharCode('0x'+p1)));}
 function b64DecUtf8(str){return decodeURIComponent(atob(str.replace(/\s/g,'')).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));}
@@ -679,7 +668,7 @@ document.getElementById('gh-pull').addEventListener('click',async()=>{
     const data=JSON.parse(b64DecUtf8(j.content));
     const km={DT:'d',CK:'ck',SK:'sk',RT:'r',NT:'n',DS:'ds',SV:'sv',OV:'ov',PHASES:'ph',LIB:'lib',SEX:'sex',MEAS:'meas',ACT:'act',CF:'cf',WS:'ws'};
     Object.keys(km).forEach(k=>{if(data[k]!==undefined)localStorage.setItem('cb42'+km[k],JSON.stringify(data[k]));});
-    ld();updMacro();jtt();showView('home');
+    ld();updMacro();jtt();
     ghStatus('✓ Pulled successfully at '+new Date().toLocaleTimeString()+' (data exported '+(data.exported||'unknown')+').');
   }catch(e){ghStatus('Pull failed: '+e.message,true);}
 });
@@ -719,18 +708,16 @@ function rdrLT(){const tb=document.getElementById('ltb');tb.innerHTML='';LIB.for
 document.getElementById('alb').addEventListener('click',()=>{LIB.push({id:'ex_'+Date.now(),n:'',t:'',sets:3,r:''});persist();rdrLT();setTimeout(()=>{const rs=document.querySelectorAll('#ltb tr');if(rs.length)rs[rs.length-1].querySelector('input').focus();},50);});
 function updMacro(){const ph=phFor(now());const pb=document.getElementById('pbadge'),pd=document.getElementById('pdet'),pl=document.getElementById('plbl');if(!ph){pl.textContent='—';pb.textContent='—';pb.className='mbadge neutral';pd.textContent='—';return;}pl.textContent=ph.label;pb.textContent=ph.kcal+' kcal';pb.className='mbadge '+(ph.kcal<2200?'cut':'maint');pd.textContent=ph.p+'P / '+ph.f+'F / '+ph.c+'C';}
 // Views
-const VIEW_EL={home:'hv',log:'lv',prog:'pv',meas:'mv',week:'wv'};
+const VIEW_EL={log:'lv',prog:'pv',meas:'mv',week:'wv'};
 function showView(v){
   CV=v;
   Object.keys(VIEW_EL).forEach(id=>{document.getElementById(VIEW_EL[id]).classList.toggle('open',id===v);});
   ['log','prog','meas','week'].forEach(id=>{const btn=document.getElementById('vt-'+id);if(btn)btn.classList.toggle('act',id===v);});
-  if(v==='home')rdrHome();
   if(v==='prog')rdrProg();
   if(v==='meas')rdrMeas();
   if(v==='week')rdrWeek();
 }
-document.getElementById('home-btn').addEventListener('click',()=>showView('home'));
-document.getElementById('vt-log').addEventListener('click',()=>jtt());
+document.getElementById('home-btn').addEventListener('click',()=>jtt());
 ['prog','meas','week'].forEach(v=>{document.getElementById('vt-'+v).addEventListener('click',()=>showView(v));});
 // Ribbon
 // ── Ribbon: static 7-day view, always Sat–Fri of current week ────────────
@@ -772,7 +759,19 @@ function rdrSel(){
 function rdrW(){
   const el=document.getElementById('wt');el.innerHTML='';
   const curWeek=o2w(tOff());
-  for(let w=1;w<=TW;w++){const ph=phFor(dfo(w2o(w)+6));const col=phCol(ph);const b=document.createElement('button');b.className='wb'+(w===CW?' aw':'')+(w<curWeek?' past':'');b.textContent='W'+w;if(col){b.style.borderColor=col;if(w===CW){b.style.background=col+'18';b.style.color=col;b.style.borderWidth='2px';}}b.addEventListener('click',()=>{CW=w;SO=w2o(w);rdrW();rdrS();rdrSA();});el.appendChild(b);}
+  for(let w=1;w<=TW;w++){
+    const b=document.createElement('button');
+    let cls='wb'+(w===CW?' aw':'');
+    if(w<curWeek)cls+=' past';else if(w>curWeek)cls+=' future';
+    b.className=cls;
+    b.textContent='W'+w;
+    if(w===curWeek){
+      const ph=phFor(dfo(w2o(w)+6));const col=phCol(ph);
+      if(col){b.style.borderColor=col;if(w===CW){b.style.background=col+'18';b.style.color=col;b.style.borderWidth='2px';}}
+    }
+    b.addEventListener('click',()=>{CW=w;SO=w2o(w);rdrW();rdrS();rdrSA();});
+    el.appendChild(b);
+  }
   setTimeout(()=>{const a=el.querySelector('.wb.aw');if(a)a.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});},50);
 }
 function scrollToWeek(w){const cell=document.querySelector('#sg .dc[data-off="'+w2o(w)+'"]');if(cell)cell.scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});}
@@ -882,6 +881,9 @@ function gF(wt,rp,sets,pw,pr,ps,tg){
   if(wt!==null&&pw!==null&&wt>pw)f.push({c:'fp',l:'↑ weight'});
   if(rp>pr)f.push({c:'fp',l:'↑ reps'});
   if(!f.some(x=>x.c==='fp')){if(rp<pr||(wt!==null&&pw!==null&&wt<pw)||sets<ps)f.push({c:'fs',l:'stall'});else{const u=pTgt(tg);if(u!==null&&rp>=u)f.push({c:'fp',l:'ready ↑'});else f.push({c:'fn',l:'maintained'});}}
+  const curVol=calcVol(wt||0,rp||0,sets||1);const prevVol=calcVol(pw||0,pr||0,ps||1);
+  if(curVol>prevVol)f.push({c:'fp',l:'↑ volume'});
+  else if(curVol<prevVol)f.push({c:'fs',l:'↓ volume'});
   return f;
 }
 function fH(arr){if(!arr||!arr.length)return '<span class="fl fn">—</span>';return '<div class="flags">'+arr.map(f=>'<span class="fl '+f.c+'">'+f.l+'</span>').join('')+'</div>';}
@@ -1438,36 +1440,8 @@ function rdrWeek(){
     el.appendChild(eDiv);
   }
 }
-// ── Morning Check-in (Home) ──────────────────────────────────────────────
-function greetingText(){
-  const h=new Date().getHours();
-  if(h<12)return 'Good morning';
-  if(h<18)return 'Good afternoon';
-  return 'Good evening';
-}
-function rdrHome(){
-  const el=document.getElementById('home-content');if(!el)return;
-  el.innerHTML='';
-  const wrap=document.createElement('div');wrap.className='home-landing';
-  wrap.innerHTML=`<svg class="hello-sun" viewBox="0 0 100 100" width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="17" stroke="var(--aa)" stroke-width="4"/>
-    <g stroke="var(--aa)" stroke-width="4" stroke-linecap="round">
-      <line x1="50" y1="6" x2="50" y2="18"/>
-      <line x1="50" y1="82" x2="50" y2="94"/>
-      <line x1="6" y1="50" x2="18" y2="50"/>
-      <line x1="82" y1="50" x2="94" y2="50"/>
-      <line x1="19" y1="19" x2="27" y2="27"/>
-      <line x1="73" y1="73" x2="81" y2="81"/>
-      <line x1="81" y1="19" x2="73" y2="27"/>
-      <line x1="27" y1="73" x2="19" y2="81"/>
-    </g>
-  </svg>
-  <div class="hk-date">${fmt(now())}</div>
-  <div class="hk-greet">${greetingText()}, Ben</div>`;
-  el.appendChild(wrap);
-}
 function toast(msg){const t=document.getElementById('tst');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-ld();updMacro();jtt();showView('home');
+ld();updMacro();jtt();
 </script>
 </body>
 </html>
