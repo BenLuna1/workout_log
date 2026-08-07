@@ -235,6 +235,7 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
 .ps{display:flex;gap:5px;margin-bottom:.85rem;flex-wrap:wrap}
 .psb{font-size:12px;padding:4px 13px;border-radius:20px;border:1.5px solid var(--b1);background:transparent;color:var(--ts);cursor:pointer;font-weight:500}
 .psb:hover{border-color:var(--b2);color:var(--tx)}
+.psb.act{background:color-mix(in srgb,var(--ab) 10%,transparent);border-color:var(--ab);color:var(--ab)}
 .psb.s1.act{background:color-mix(in srgb,var(--s1) 10%,transparent);border-color:var(--s1);color:var(--s1)}
 .psb.s2.act{background:color-mix(in srgb,var(--s2) 10%,transparent);border-color:var(--s2);color:var(--s2)}
 .psb.s3.act{background:color-mix(in srgb,var(--s3) 10%,transparent);border-color:var(--s3);color:var(--s3)}
@@ -394,7 +395,7 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
   <div class="set-panel" id="set-library">
     <button class="set-back" id="back-library">‹ Settings</button>
     <div class="sl">Exercise library</div>
-    <table class="lt"><thead><tr><th style="width:36%">Name</th><th style="width:36%">Note</th><th style="width:20%">Sets×reps</th><th style="width:8%"></th></tr></thead><tbody id="ltb"></tbody></table>
+    <table class="lt"><thead><tr><th style="width:24%">Name</th><th style="width:22%">Note</th><th style="width:14%">Sets×reps</th><th style="width:26%">Region</th><th style="width:8%"></th></tr></thead><tbody id="ltb"></tbody></table>
     <button class="abtn2" id="alb" style="margin-top:.5rem">+ Add exercise</button>
   </div>
   <div class="set-panel" id="set-cf">
@@ -501,20 +502,22 @@ function isProgExcluded(id){
   const nm=(lbi(id).n||'').toLowerCase();
   return PROG_EXCL_NAMES.some(frag=>nm.includes(frag));
 }
+const REGIONS=['Chest','Back','Shoulders','Arms','Legs','Core'];
+const REGION_COLORS={Chest:'#6366f1',Back:'#0ea5e9',Shoulders:'#10b981',Arms:'#f59e0b',Legs:'#ec4899',Core:'#8b5cf6'};
 const DL=[
-  {id:'s_arm_db_bench',n:'Single Arm DB Bench Press',t:'DB — alternate sides',sets:3,r:'12'},{id:'arnold_press',n:'Arnold Press',t:'DB, seated',sets:3,r:'10'},
-  {id:'db_lat_raise',n:'DB Lateral Raise',t:'DB, controlled eccentric',sets:3,r:'15'},{id:'face_pulls',n:'Face Pulls',t:'Band',sets:3,r:'15'},
-  {id:'kb_skull_crush',n:'KB Skull Crusher',t:'KB, lying',sets:3,r:'12'},{id:'kb_tricep_ext',n:'KB Tricep Extension',t:'KB',sets:3,r:'14'},
-  {id:'db_pullover',n:'DB Pullover',t:'DB, lat/serratus',sets:3,r:'10'},{id:'bw_pushups',n:'BW Push-ups',t:'Bodyweight',sets:3,r:'12'},
-  {id:'kb_arm_row',n:'KB Arm Row',t:'KB, unilateral',sets:3,r:'10'},{id:'bd_stand_row',n:'BD Standing Row',t:'Band',sets:3,r:'15'},
-  {id:'db_preach_curl',n:'DB Preacher Curl',t:'DB, on knee or bench',sets:3,r:'10'},{id:'bd_stand_curl',n:'BD Standing Curl',t:'Band',sets:3,r:'12'},
-  {id:'kb_rdl',n:'KB RDL',t:'KB, hip hinge',sets:3,r:'12'},{id:'plank_s2',n:'Plank',t:'Bodyweight, timed',sets:3,r:'45 s'},
-  {id:'dead_bug_s2',n:'Dead Bug',t:'Bodyweight',sets:3,r:'10'},{id:'kb_wrist_curls_alt',n:'KB Wrist Curls & Alt Raise',t:'KB superset',sets:2,r:'8–10'},
-  {id:'kb_wrist_ext_alt',n:'KB Wrist Extensions & Alt Raise',t:'KB superset',sets:2,r:'8–10'},{id:'kb_goblet_sq',n:'KB Goblet Squat',t:'KB, full depth',sets:3,r:'13'},
-  {id:'bd_hip_thrust',n:'BD Hip Thrusts',t:'Band, back on bench',sets:3,r:'15'},{id:'bulg_split',n:'Bulgarian Split Squat',t:'Rear foot elevated',sets:3,r:'10/side'},
-  {id:'kb_sumo_dl',n:'KB Sumo Deadlift',t:'KB, wide stance',sets:3,r:'12'},{id:'bw_nordic_curl',n:'BW Nordic Curl',t:'Bodyweight, eccentric',sets:3,r:'8'},
-  {id:'db_stiff_dl',n:'DB Stiff Leg Deadlift',t:'DB, hamstring stretch',sets:3,r:'12'},{id:'back_ext',n:'Back Extensions',t:'Bodyweight / weighted',sets:3,r:'15'},
-  {id:'ab_rollout',n:'Ab Rollout',t:'Ab wheel, full extension',sets:3,r:'10'},{id:'dead_bug_s3',n:'Dead Bug (S3)',t:'Bodyweight / weighted',sets:3,r:'10'},
+  {id:'s_arm_db_bench',n:'Single Arm DB Bench Press',t:'DB — alternate sides',sets:3,r:'12',region:'Chest'},{id:'arnold_press',n:'Arnold Press',t:'DB, seated',sets:3,r:'10',region:'Shoulders'},
+  {id:'db_lat_raise',n:'DB Lateral Raise',t:'DB, controlled eccentric',sets:3,r:'15',region:'Shoulders'},{id:'face_pulls',n:'Face Pulls',t:'Band',sets:3,r:'15',region:'Shoulders'},
+  {id:'kb_skull_crush',n:'KB Skull Crusher',t:'KB, lying',sets:3,r:'12',region:'Arms'},{id:'kb_tricep_ext',n:'KB Tricep Extension',t:'KB',sets:3,r:'14',region:'Arms'},
+  {id:'db_pullover',n:'DB Pullover',t:'DB, lat/serratus',sets:3,r:'10',region:'Chest'},{id:'bw_pushups',n:'BW Push-ups',t:'Bodyweight',sets:3,r:'12',region:'Chest'},
+  {id:'kb_arm_row',n:'KB Arm Row',t:'KB, unilateral',sets:3,r:'10',region:'Back'},{id:'bd_stand_row',n:'BD Standing Row',t:'Band',sets:3,r:'15',region:'Back'},
+  {id:'db_preach_curl',n:'DB Preacher Curl',t:'DB, on knee or bench',sets:3,r:'10',region:'Arms'},{id:'bd_stand_curl',n:'BD Standing Curl',t:'Band',sets:3,r:'12',region:'Arms'},
+  {id:'kb_rdl',n:'KB RDL',t:'KB, hip hinge',sets:3,r:'12',region:'Legs'},{id:'plank_s2',n:'Plank',t:'Bodyweight, timed',sets:3,r:'45 s',region:'Core'},
+  {id:'dead_bug_s2',n:'Dead Bug',t:'Bodyweight',sets:3,r:'10',region:'Core'},{id:'kb_wrist_curls_alt',n:'KB Wrist Curls & Alt Raise',t:'KB superset',sets:2,r:'8–10',region:'Arms'},
+  {id:'kb_wrist_ext_alt',n:'KB Wrist Extensions & Alt Raise',t:'KB superset',sets:2,r:'8–10',region:'Arms'},{id:'kb_goblet_sq',n:'KB Goblet Squat',t:'KB, full depth',sets:3,r:'13',region:'Legs'},
+  {id:'bd_hip_thrust',n:'BD Hip Thrusts',t:'Band, back on bench',sets:3,r:'15',region:'Legs'},{id:'bulg_split',n:'Bulgarian Split Squat',t:'Rear foot elevated',sets:3,r:'10/side',region:'Legs'},
+  {id:'kb_sumo_dl',n:'KB Sumo Deadlift',t:'KB, wide stance',sets:3,r:'12',region:'Legs'},{id:'bw_nordic_curl',n:'BW Nordic Curl',t:'Bodyweight, eccentric',sets:3,r:'8',region:'Legs'},
+  {id:'db_stiff_dl',n:'DB Stiff Leg Deadlift',t:'DB, hamstring stretch',sets:3,r:'12',region:'Legs'},{id:'back_ext',n:'Back Extensions',t:'Bodyweight / weighted',sets:3,r:'15',region:'Back'},
+  {id:'ab_rollout',n:'Ab Rollout',t:'Ab wheel, full extension',sets:3,r:'10',region:'Core'},{id:'dead_bug_s3',n:'Dead Bug (S3)',t:'Bodyweight / weighted',sets:3,r:'10',region:'Core'},
 ];
 const DS2={S1:['s_arm_db_bench','arnold_press','db_lat_raise','face_pulls','kb_skull_crush','db_pullover'],S2:['kb_arm_row','bd_stand_row','db_preach_curl','bd_stand_curl','kb_rdl','dead_bug_s2','kb_wrist_curls_alt','kb_wrist_ext_alt'],S3:['bd_hip_thrust','bulg_split','kb_sumo_dl','bw_nordic_curl','db_stiff_dl','back_ext','ab_rollout','dead_bug_s3'],S4:[]};
 const SM={S1:{l:'Session 1',d:'Chest · Shoulders · Triceps'},S2:{l:'Session 2',d:'Back · Biceps · Core + Forearm'},S3:{l:'Session 3',d:'Lower Body'},S4:{l:'Session 4',d:'Free session'}};
@@ -529,6 +532,9 @@ let GHCFG={token:'',repo:'',branch:'main',path:'training-log-data.json'};
 try{GHCFG=JSON.parse(localStorage.getItem('cb42ghcfg')||'null')||GHCFG;}catch(e){}
 const UL=new Set();let CHT={};let APC=null;
 let measFilters={wt:'log',ci:'log',bf:'log'};
+let progFilters={S1:'log',S2:'log',S3:'log',S4:'log'};
+let progRegionFilters={Chest:'log',Back:'log',Shoulders:'log',Arms:'log',Legs:'log',Core:'log'};
+let progViewMode='session';
 
 function todayAMS(){const s=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Amsterdam',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const[y,m,d]=s.split('-');const dt=new Date(parseInt(y),parseInt(m)-1,parseInt(d));dt.setHours(0,0,0,0);return dt;}
 function isoAMS(dt){return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Amsterdam',year:'numeric',month:'2-digit',day:'2-digit'}).format(dt);}
@@ -555,7 +561,7 @@ function sxk(o,s){return o+'_'+s;}
 function lk(o,s){return o+'_'+s;}
 function isLk(o,s){return!!SV[o]&&o<tOff()&&!UL.has(lk(o,s));}
 function isR(o){return!!RT['r'+o];}
-function lbi(id){return LIB.find(e=>e.id===id)||{id,n:id,t:'',sets:3,r:'',kg:null};}
+function lbi(id){return LIB.find(e=>e.id===id)||{id,n:id,t:'',sets:3,r:'',kg:null,region:'Other'};}
 function gDS(s){return Object.keys(DS).map(o=>parseInt(o)).filter(o=>DS[o]===s&&!isR(o)).sort((a,b)=>b-a);}
 function wSk(o,s,id){return!!SK[skk(o,s,id)];}
 function gSEX(o,s){
@@ -704,8 +710,8 @@ document.querySelectorAll('.smi[data-panel]').forEach(item=>item.addEventListene
 document.getElementById('cfsv').addEventListener('click',()=>{CF.Strength=parseInt(document.getElementById('cfs').value)||DEF_CF.Strength;CF.Walking=parseInt(document.getElementById('cfw').value)||DEF_CF.Walking;CF.Other=parseInt(document.getElementById('cfo').value)||DEF_CF.Other;persist();toast('Saved');});
 function rdrPT(){const tb=document.getElementById('ptb');tb.innerHTML='';const sorted=[...PHASES].sort((a,b)=>new Date(a.start)-new Date(b.start));sorted.forEach((ph,i)=>{const c=PC[i%PC.length];const tr=document.createElement('tr');tr.innerHTML=`<td><input class="fi" type="text" value="${ph.label}" data-i="${i}" data-f="label" style="border-left:3px solid ${c}"></td><td><input class="fi" type="date" value="${ph.start}" data-i="${i}" data-f="start"></td><td><input class="fi" type="number" value="${ph.kcal}" data-i="${i}" data-f="kcal"></td><td><input class="fi" type="number" value="${ph.p}" data-i="${i}" data-f="p"></td><td><input class="fi" type="number" value="${ph.f}" data-i="${i}" data-f="f"></td><td><input class="fi" type="number" value="${ph.c}" data-i="${i}" data-f="c"></td><td><button class="db" data-i="${i}">✕</button></td>`;tb.appendChild(tr);tr.querySelectorAll('input').forEach(inp=>{inp.addEventListener('change',()=>{const ph2=PHASES[PHASES.indexOf(sorted[parseInt(inp.dataset.i)])];if(!ph2)return;const f=inp.dataset.f;ph2[f]=f==='label'||f==='start'?inp.value:parseInt(inp.value)||0;persist();updMacro();rdrW();});});tr.querySelector('.db').addEventListener('click',function(){PHASES.splice(PHASES.indexOf(sorted[parseInt(this.dataset.i)]),1);persist();updMacro();rdrPT();rdrW();});});}
 document.getElementById('apb').addEventListener('click',()=>{PHASES.push({label:'New phase',start:fISO(now()),kcal:2000,p:160,f:70,c:180});persist();rdrPT();updMacro();rdrW();});
-function rdrLT(){const tb=document.getElementById('ltb');tb.innerHTML='';LIB.forEach((ex,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td><input class="fi" type="text" value="${ex.n}" data-i="${i}" data-f="n"></td><td><input class="fi" type="text" value="${ex.t}" data-i="${i}" data-f="t"></td><td style="display:flex;gap:4px"><input class="fi" type="text" value="${ex.sets}" data-i="${i}" data-f="sets" style="width:36px"><span style="line-height:28px;font-size:11px;color:var(--tm)">×</span><input class="fi" type="text" value="${ex.r}" data-i="${i}" data-f="r" style="width:52px"></td><td><button class="db" data-i="${i}">✕</button></td>`;tb.appendChild(tr);tr.querySelectorAll('input').forEach(inp=>{inp.addEventListener('change',()=>{const ex2=LIB[parseInt(inp.dataset.i)];if(!ex2)return;ex2[inp.dataset.f]=inp.value;persist();});});tr.querySelector('.db').addEventListener('click',function(){LIB.splice(parseInt(this.dataset.i),1);persist();rdrLT();});});}
-document.getElementById('alb').addEventListener('click',()=>{LIB.push({id:'ex_'+Date.now(),n:'',t:'',sets:3,r:''});persist();rdrLT();setTimeout(()=>{const rs=document.querySelectorAll('#ltb tr');if(rs.length)rs[rs.length-1].querySelector('input').focus();},50);});
+function rdrLT(){const tb=document.getElementById('ltb');tb.innerHTML='';LIB.forEach((ex,i)=>{const tr=document.createElement('tr');const regionOpts=REGIONS.concat(['Other']).map(r=>'<option value="'+r+'"'+((ex.region||'Other')===r?' selected':'')+'>'+r+'</option>').join('');tr.innerHTML=`<td><input class="fi" type="text" value="${ex.n}" data-i="${i}" data-f="n"></td><td><input class="fi" type="text" value="${ex.t}" data-i="${i}" data-f="t"></td><td style="display:flex;gap:4px"><input class="fi" type="text" value="${ex.sets}" data-i="${i}" data-f="sets" style="width:36px"><span style="line-height:28px;font-size:11px;color:var(--tm)">×</span><input class="fi" type="text" value="${ex.r}" data-i="${i}" data-f="r" style="width:52px"></td><td><select class="fi" data-i="${i}" data-f="region">${regionOpts}</select></td><td><button class="db" data-i="${i}">✕</button></td>`;tb.appendChild(tr);tr.querySelectorAll('input,select').forEach(inp=>{inp.addEventListener('change',()=>{const ex2=LIB[parseInt(inp.dataset.i)];if(!ex2)return;ex2[inp.dataset.f]=inp.value;persist();if(inp.dataset.f==='region'&&CV==='prog')rdrProg();});});tr.querySelector('.db').addEventListener('click',function(){LIB.splice(parseInt(this.dataset.i),1);persist();rdrLT();});});}
+document.getElementById('alb').addEventListener('click',()=>{LIB.push({id:'ex_'+Date.now(),n:'',t:'',sets:3,r:'',region:'Other'});persist();rdrLT();setTimeout(()=>{const rs=document.querySelectorAll('#ltb tr');if(rs.length)rs[rs.length-1].querySelector('input').focus();},50);});
 function updMacro(){const ph=phFor(now());const pb=document.getElementById('pbadge'),pd=document.getElementById('pdet'),pl=document.getElementById('plbl');if(!ph){pl.textContent='—';pb.textContent='—';pb.className='mbadge neutral';pd.textContent='—';return;}pl.textContent=ph.label;pb.textContent=ph.kcal+' kcal';pb.className='mbadge '+(ph.kcal<2200?'cut':'maint');pd.textContent=ph.p+'P / '+ph.f+'F / '+ph.c+'C';}
 // Views
 const VIEW_EL={log:'lv',prog:'pv',meas:'mv',week:'wv'};
@@ -869,7 +875,7 @@ function rdrStabs(){
   el.appendChild(rb);
 }
 function oPkr(cell,idx,id,o){if(APC&&APC!==cell){const op=APC.querySelector('.pkr');if(op)op.classList.remove('open');}APC=cell;const pkr=cell.querySelector('.pkr');pkr.classList.toggle('open');if(!pkr.classList.contains('open')){APC=null;return;}const inp=pkr.querySelector('input');const lst=pkr.querySelector('.pkl');inp.value='';bPL(lst,idx,id,o,'');setTimeout(()=>inp.focus(),50);inp.oninput=()=>bPL(lst,idx,id,o,inp.value);}
-function bPL(lst,idx,id,o,f){lst.innerHTML='';const ri=document.createElement('div');ri.className='pki rem';ri.innerHTML='<div>⊘ Remove exercise</div>';ri.addEventListener('mousedown',e=>{e.preventDefault();const c=gSEX(o,CS);c.splice(idx,1);sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(ri);const fl=f.toLowerCase();LIB.filter(e=>!fl||e.n.toLowerCase().includes(fl)||e.t.toLowerCase().includes(fl)).forEach(ex=>{const item=document.createElement('div');item.className='pki';item.innerHTML='<div>'+ex.n+'</div><div class="pin">'+ex.t+'</div>';item.addEventListener('mousedown',e=>{e.preventDefault();const c=gSEX(o,CS);c[idx]=ex.id;sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(item);});if(f&&!LIB.some(e=>e.n.toLowerCase().includes(f.toLowerCase()))){const item=document.createElement('div');item.className='pki';item.style.color='var(--in-tx)';item.innerHTML='<div>+ Add "'+f+'" to library</div>';item.addEventListener('mousedown',e=>{e.preventDefault();const nid='ex_'+Date.now();LIB.push({id:nid,n:f,t:'',sets:3,r:''});persist();const c=gSEX(o,CS);c[idx]=nid;sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(item);}}
+function bPL(lst,idx,id,o,f){lst.innerHTML='';const ri=document.createElement('div');ri.className='pki rem';ri.innerHTML='<div>⊘ Remove exercise</div>';ri.addEventListener('mousedown',e=>{e.preventDefault();const c=gSEX(o,CS);c.splice(idx,1);sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(ri);const fl=f.toLowerCase();LIB.filter(e=>!fl||e.n.toLowerCase().includes(fl)||e.t.toLowerCase().includes(fl)).forEach(ex=>{const item=document.createElement('div');item.className='pki';item.innerHTML='<div>'+ex.n+'</div><div class="pin">'+ex.t+'</div>';item.addEventListener('mousedown',e=>{e.preventDefault();const c=gSEX(o,CS);c[idx]=ex.id;sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(item);});if(f&&!LIB.some(e=>e.n.toLowerCase().includes(f.toLowerCase()))){const item=document.createElement('div');item.className='pki';item.style.color='var(--in-tx)';item.innerHTML='<div>+ Add "'+f+'" to library</div>';item.addEventListener('mousedown',e=>{e.preventDefault();const nid='ex_'+Date.now();LIB.push({id:nid,n:f,t:'',sets:3,r:'',region:'Other'});persist();const c=gSEX(o,CS);c[idx]=nid;sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(item);}}
 function addExRow(){const o=aOff();if(isR(o)||isLk(o,CS))return;const ids=gSEX(o,CS);ids.push('__new__');sSEX(o,CS,ids);rdrTable();setTimeout(()=>{const ps=document.querySelectorAll('.pb2');if(ps.length)ps[ps.length-1].click();},60);}
 function getPrv(s,id,co){const days=gDS(s).filter(o=>o<co);for(const o of days){if(wSk(o,s,id))continue;const v=DT[dkd(o,s,id)];if(v&&(v[0]!==null||v[1]!==null)){const ov=OV[ovk(o,s,id)];return{wt:v[0],rp:v[1],sets:parseInt(ov?ov.sets:lbi(id).sets)||3};}}return null;}
 function getLst(id,co,cs2){const sd=gDS(cs2).filter(o=>o<co);for(const o of sd){if(wSk(o,cs2,id))continue;const v=DT[dkd(o,cs2,id)];if(v&&(v[0]!==null||v[1]!==null))return{wt:v[0],rp:v[1]};}for(const s of['S1','S2','S3','S4']){if(s===cs2)continue;const od=gDS(s).filter(o=>o<=co);for(const o of od){const v=DT[dkd(o,s,id)];if(v&&(v[0]!==null||v[1]!==null))return{wt:v[0],rp:v[1]};}}return null;}
@@ -882,8 +888,8 @@ function gF(wt,rp,sets,pw,pr,ps,tg){
   if(rp>pr)f.push({c:'fp',l:'↑ reps'});
   if(!f.some(x=>x.c==='fp')){if(rp<pr||(wt!==null&&pw!==null&&wt<pw)||sets<ps)f.push({c:'fs',l:'stall'});else{const u=pTgt(tg);if(u!==null&&rp>=u)f.push({c:'fp',l:'ready ↑'});else f.push({c:'fn',l:'maintained'});}}
   const curVol=calcVol(wt||0,rp||0,sets||1);const prevVol=calcVol(pw||0,pr||0,ps||1);
-  if(curVol>prevVol)f.push({c:'fp',l:'↑ volume'});
-  else if(curVol<prevVol)f.push({c:'fs',l:'↓ volume'});
+  if(curVol>prevVol){const pct=prevVol>0?Math.round((curVol-prevVol)/prevVol*100):null;f.push({c:'fp',l:'Vol ↑'+(pct!==null?pct+'%':'')});}
+  else if(curVol<prevVol){const pct=prevVol>0?Math.round((prevVol-curVol)/prevVol*100):null;f.push({c:'fs',l:'Vol ↓'+(pct!==null?pct+'%':'')});}
   return f;
 }
 function fH(arr){if(!arr||!arr.length)return '<span class="fl fn">—</span>';return '<div class="flags">'+arr.map(f=>'<span class="fl '+f.c+'">'+f.l+'</span>').join('')+'</div>';}
@@ -1068,7 +1074,7 @@ function rdrAct(container,o){
 // ── Shared chart+legend row builder (chart left, collapsible key right, visible by default) ──
 function buildChartRow(cid, datasets, yUnit, labels, height, opts){
   const chartLegRow=document.createElement('div');chartLegRow.style.cssText='display:flex;align-items:flex-start;gap:12px';
-  const scrollWrap=document.createElement('div');scrollWrap.className='chs';scrollWrap.style.flex='1';scrollWrap.style.overflowX='auto';scrollWrap.id=cid+'_scroll';
+  const scrollWrap=document.createElement('div');scrollWrap.className='chs';scrollWrap.style.flex='1';scrollWrap.style.minWidth='0';scrollWrap.style.overflowX='auto';scrollWrap.id=cid+'_scroll';
   const pxPerPt=opts&&opts.pxPerPt?opts.pxPerPt:56;
   const minW=Math.max(labels.length*pxPerPt,300);
   const canvas=document.createElement('canvas');canvas.id=cid;canvas.setAttribute('width',minW);canvas.setAttribute('height',height);canvas.style.cssText='height:'+height+'px;display:block';
@@ -1094,18 +1100,42 @@ function mountChartRow(container, cid, datasets, yUnit, labels, height, opts){
 }
 // Progression
 let activeS=new Set(['S1']);
+let activeRegions=new Set(['Chest']);
 function rdrProg(){
   const el=document.getElementById('ps');el.innerHTML='';
-  ['S1','S2','S3','S4'].forEach(s=>{
-    const b=document.createElement('button');b.className='psb '+s.toLowerCase()+(activeS.has(s)?' act':'');b.textContent=s;
-    b.addEventListener('click',()=>{if(activeS.has(s))activeS.delete(s);else activeS.add(s);rdrProg();});
-    el.appendChild(b);
+  const modeRow=document.createElement('div');modeRow.className='wj-tg';modeRow.style.cssText='margin-bottom:.65rem;width:fit-content';
+  [{v:'session',l:'By Session'},{v:'region',l:'By Region'}].forEach(opt=>{
+    const o=document.createElement('div');o.className='wj-to'+(progViewMode===opt.v?' sel':'');o.textContent=opt.l;
+    o.addEventListener('click',()=>{if(progViewMode===opt.v)return;progViewMode=opt.v;rdrProg();});
+    modeRow.appendChild(o);
   });
+  el.appendChild(modeRow);
+  const pillsRow=document.createElement('div');pillsRow.style.cssText='display:flex;gap:5px;flex-wrap:wrap';
+  if(progViewMode==='session'){
+    ['S1','S2','S3','S4'].forEach(s=>{
+      const b=document.createElement('button');b.className='psb '+s.toLowerCase()+(activeS.has(s)?' act':'');b.textContent=s;
+      b.addEventListener('click',()=>{if(activeS.has(s))activeS.delete(s);else activeS.add(s);rdrProg();});
+      pillsRow.appendChild(b);
+    });
+  }else{
+    REGIONS.forEach(r=>{
+      const b=document.createElement('button');b.className='psb'+(activeRegions.has(r)?' act':'');b.textContent=r;
+      b.addEventListener('click',()=>{if(activeRegions.has(r))activeRegions.delete(r);else activeRegions.add(r);rdrProg();});
+      pillsRow.appendChild(b);
+    });
+  }
+  el.appendChild(pillsRow);
   const cont=document.getElementById('prog-charts');cont.innerHTML='';
-  if(!activeS.size){cont.innerHTML='<div class="pe">Select a session above.</div>';return;}
-  activeS.forEach(s=>rdrPC(s,cont));
+  if(progViewMode==='session'){
+    if(!activeS.size){cont.innerHTML='<div class="pe">Select a session above.</div>';return;}
+    activeS.forEach(s=>rdrPC(s,cont));
+  }else{
+    if(!activeRegions.size){cont.innerHTML='<div class="pe">Select a region above.</div>';return;}
+    activeRegions.forEach(r=>rdrPCRegion(r,cont));
+  }
 }
 function gPD(s){const to=tOff();const d=new Set();Object.keys(DT).forEach(k=>{const m=k.match(/^dt_(-?\d+)_([^_]+)_/);if(m&&m[2]===s){const off=parseInt(m[1]);if(!isR(off)&&off<=to)d.add(off);}});return Array.from(d).sort((a,b)=>a-b);}
+function gPDRegion(region){const to=tOff();const d=new Set();Object.keys(DT).forEach(k=>{const m=k.match(/^dt_(-?\d+)_([^_]+)_(.+)$/);if(!m)return;const off=parseInt(m[1]);const exId=m[3];if(isR(off)||off>to||exId.startsWith('_')||isProgExcluded(exId))return;if((lbi(exId).region||'Other')!==region)return;d.add(off);});return Array.from(d).sort((a,b)=>a-b);}
 function calcVol(wt,rp,sets){return Math.round((wt||0)*(rp||0)*(sets||1)*10)/10;}
 function rdrPC(s,cont){
   if(!window.Chart)return;
@@ -1128,11 +1158,50 @@ function rdrPC(s,cont){
   const subLbl=document.createElement('div');subLbl.style.cssText='font-size:10px;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.04em';subLbl.textContent='Volume = sets × reps × kg';
   titleRow.appendChild(titleEl);titleRow.appendChild(subLbl);panel.appendChild(titleRow);
   if(!days.length||!exIds.length){const em=document.createElement('div');em.className='pe';em.textContent='No data yet for '+s+'.';panel.appendChild(em);cont.appendChild(panel);return;}
-  const labels=days.map(o=>fmtDM(o));
-  const datasets=exIds.map((id,i)=>({label:lbi(id).n,data:days.map(o=>{const v=DT[dkd(o,s,id)];if(!v||wSk(o,s,id))return null;return calcVol(v[0]||0,v[1]||0,gCS(o,s,id))||null;}),borderColor:EXC[i%EXC.length],backgroundColor:EXC[i%EXC.length]+'1a',borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:0.2,spanGaps:true})).filter(ds=>ds.data.some(v=>v!==null));
+  const filterRow=document.createElement('div');filterRow.style.cssText='margin-bottom:.65rem';
+  filterRow.appendChild(mkPeriodToggle(progFilters,s,rdrProg,'Day'));
+  panel.appendChild(filterRow);
+  const mode=progFilters[s]||'log';
+  const offByISO={};const dayISOs=days.map(o=>{const iso=fISO(dfo(o));offByISO[iso]=o;return iso;}).sort();
+  const P=computePeriods(dayISOs,mode);
+  const datasets=exIds.map((id,i)=>({label:lbi(id).n,data:aggSeries(dayISOs,iso=>{const o=offByISO[iso];const v=DT[dkd(o,s,id)];if(!v||wSk(o,s,id))return null;return calcVol(v[0]||0,v[1]||0,gCS(o,s,id))||null;},mode,P.keys),borderColor:EXC[i%EXC.length],backgroundColor:EXC[i%EXC.length]+'1a',borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:0.2,spanGaps:true})).filter(ds=>ds.data.some(v=>v!==null));
   const cid='pc_'+s;
   cont.appendChild(panel);
-  mountChartRow(panel,cid,datasets,' vol',labels,220);
+  mountChartRow(panel,cid,datasets,' vol',P.labels,220,{pxPerPt:mode==='log'?56:70});
+}
+function rdrPCRegion(region,cont){
+  if(!window.Chart)return;
+  const to=tOff();
+  const days=gPDRegion(region);const exSet=new Set();
+  const volByDayEx={};
+  Object.keys(DT).forEach(k=>{
+    const m=k.match(/^dt_(-?\d+)_([^_]+)_(.+)$/);if(!m)return;
+    const off=parseInt(m[1]);const sess=m[2];const exId=m[3];
+    if(isR(off)||off>to||exId.startsWith('_')||isProgExcluded(exId))return;
+    if((lbi(exId).region||'Other')!==region)return;
+    if(wSk(off,sess,exId))return;
+    const v=DT[k];if(!v||(v[0]===null&&v[1]===null))return;
+    exSet.add(exId);
+    volByDayEx[off+'|'+exId]=calcVol(v[0]||0,v[1]||0,gCS(off,sess,exId))||null;
+  });
+  const exIds=Array.from(exSet).filter(id=>id&&!id.startsWith('_'));
+  const panel=document.createElement('div');panel.className='pcw';panel.style.marginBottom='.85rem';
+  const titleRow=document.createElement('div');titleRow.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem';
+  const titleEl=document.createElement('div');titleEl.className='pct';titleEl.textContent=region;titleEl.style.color=REGION_COLORS[region]||'var(--tx)';
+  const subLbl=document.createElement('div');subLbl.style.cssText='font-size:10px;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.04em';subLbl.textContent='Volume = sets × reps × kg';
+  titleRow.appendChild(titleEl);titleRow.appendChild(subLbl);panel.appendChild(titleRow);
+  if(!days.length||!exIds.length){const em=document.createElement('div');em.className='pe';em.textContent='No data yet for '+region+'.';panel.appendChild(em);cont.appendChild(panel);return;}
+  const filterRow=document.createElement('div');filterRow.style.cssText='margin-bottom:.65rem';
+  filterRow.appendChild(mkPeriodToggle(progRegionFilters,region,rdrProg,'Day'));
+  panel.appendChild(filterRow);
+  const mode=progRegionFilters[region]||'log';
+  const dayISOs=days.map(o=>fISO(dfo(o))).sort();
+  const isoByOff={};days.forEach(o=>{isoByOff[fISO(dfo(o))]=o;});
+  const P=computePeriods(dayISOs,mode);
+  const datasets=exIds.map((id,i)=>({label:lbi(id).n,data:aggSeries(dayISOs,iso=>{const o=isoByOff[iso];const key=o+'|'+id;return volByDayEx[key]!==undefined?volByDayEx[key]:null;},mode,P.keys),borderColor:EXC[i%EXC.length],backgroundColor:EXC[i%EXC.length]+'1a',borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:0.2,spanGaps:true})).filter(ds=>ds.data.some(v=>v!==null));
+  const cid='pcr_'+region.toLowerCase();
+  cont.appendChild(panel);
+  mountChartRow(panel,cid,datasets,' vol',P.labels,220,{pxPerPt:mode==='log'?56:70});
 }
 
 // ── Unified chart builder with sticky y-axis ─────────────────────────────
@@ -1210,6 +1279,9 @@ function mkC(canvasId,scrollId,datasets,yUnit,labels,height,opts){
       }
     }
   });
+  // Default to showing the most recent data (scroll fully right) rather than the
+  // oldest — avoids needing to swipe sideways just to see the latest entries.
+  requestAnimationFrame(()=>{scroll.scrollLeft=scroll.scrollWidth;});
 }
 // Measurements
 document.getElementById('mab').addEventListener('click',()=>{const f=document.getElementById('mf2');f.classList.toggle('open');if(f.classList.contains('open')){document.getElementById('mfd').value=fISO(now());bMI();}});
@@ -1245,11 +1317,11 @@ function aggSeries(allDates,valueFn,mode,keys){
   allDates.forEach(d=>{const v=valueFn(d);if(v===null||v===undefined)return;const k=periodKey(d,mode);if(k===null)return;(buckets[k]=buckets[k]||[]).push(v);});
   return keys.map(k=>{const arr=buckets[k];if(!arr||!arr.length)return null;return Math.round((arr.reduce((a,b)=>a+b,0)/arr.length)*10)/10;});
 }
-function mkPeriodToggle(chartKey,onChange){
+function mkPeriodToggle(filtersObj,chartKey,onChange,firstLabel){
   const tg=document.createElement('div');tg.className='wj-tg';
-  [{v:'log',l:'Log'},{v:'week',l:'Week'},{v:'month',l:'Month'},{v:'year',l:'Year'}].forEach(opt=>{
-    const o=document.createElement('div');o.className='wj-to'+(measFilters[chartKey]===opt.v?' sel':'');o.textContent=opt.l;
-    o.addEventListener('click',()=>{if(measFilters[chartKey]===opt.v)return;measFilters[chartKey]=opt.v;onChange();});
+  [{v:'log',l:firstLabel||'Log'},{v:'week',l:'Week'},{v:'month',l:'Month'},{v:'year',l:'Year'}].forEach(opt=>{
+    const o=document.createElement('div');o.className='wj-to'+(filtersObj[chartKey]===opt.v?' sel':'');o.textContent=opt.l;
+    o.addEventListener('click',()=>{if(filtersObj[chartKey]===opt.v)return;filtersObj[chartKey]=opt.v;onChange();});
     tg.appendChild(o);
   });
   return tg;
@@ -1260,7 +1332,7 @@ function rdrMeasCharts(){
 
   // Weight / Lean Mass / Fat Mass chart — only dates where weight was logged
   const wtDates=allDates.filter(d=>MEAS[d]&&MEAS[d].weight!=null);
-  const wtTg=document.getElementById('wt-tg');wtTg.innerHTML='';wtTg.appendChild(mkPeriodToggle('wt',rdrMeasCharts));
+  const wtTg=document.getElementById('wt-tg');wtTg.innerHTML='';wtTg.appendChild(mkPeriodToggle(measFilters,'wt',rdrMeasCharts));
   const wtMode=measFilters.wt;
   const wtP=computePeriods(wtDates,wtMode);
   const wtDs=[
@@ -1272,7 +1344,7 @@ function rdrMeasCharts(){
 
   // Circumference chart — only dates where at least one circumference field was logged
   const ciDates=allDates.filter(d=>CID.some(id=>MEAS[d]&&MEAS[d][id]!=null));
-  const ciTg=document.getElementById('ci-tg');ciTg.innerHTML='';ciTg.appendChild(mkPeriodToggle('ci',rdrMeasCharts));
+  const ciTg=document.getElementById('ci-tg');ciTg.innerHTML='';ciTg.appendChild(mkPeriodToggle(measFilters,'ci',rdrMeasCharts));
   const ciMode=measFilters.ci;
   const ciP=computePeriods(ciDates,ciMode);
   const cDs=CID.map((id,i)=>({label:CLA[i],data:aggSeries(ciDates,d=>MEAS[d]?.[id]??null,ciMode,ciP.keys),borderColor:CC2[i],backgroundColor:CC2[i]+'1a',borderWidth:2,pointRadius:3,tension:0.2,spanGaps:true})).filter(ds=>ds.data.some(v=>v!==null));
@@ -1282,7 +1354,7 @@ function rdrMeasCharts(){
   const ciRow=document.getElementById('ci-row');ciRow.innerHTML='';mountChartRow(ciRow,'cc',cDs,' cm',ciP.labels,200,{yMin:circMin-2,yMax:circMax+2,pxPerPt:ciMode==='log'?56:70});
 
   // BF% chart — only dates (after DCUT) where at least one BF-computable field was logged
-  const bfTg=document.getElementById('bf-tg');bfTg.innerHTML='';bfTg.appendChild(mkPeriodToggle('bf',rdrMeasCharts));
+  const bfTg=document.getElementById('bf-tg');bfTg.innerHTML='';bfTg.appendChild(mkPeriodToggle(measFilters,'bf',rdrMeasCharts));
   const bfMode=measFilters.bf;
   const bfDatesAll=allDates.filter(d=>d>=DCUT).filter(d=>{
     const e=MEAS[d]||{};
