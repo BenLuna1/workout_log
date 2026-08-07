@@ -590,6 +590,14 @@ function phCol(ph){if(!ph)return null;const s=[...PHASES].sort((a,b)=>new Date(a
 function applyPatches(){Object.keys(SV).forEach(o=>{const off=parseInt(o);const s=DS[off]||DS[o];if(!s)return;const li=Object.keys(DT).filter(k=>k.startsWith('dt_'+off+'_'+s+'_')).map(k=>k.replace('dt_'+off+'_'+s+'_',''));if(!li.length)return;const cur=gSEX(off,s);let ch=false;const mg=[...cur];li.forEach(id=>{if(!mg.includes(id)){mg.push(id);ch=true;}});if(ch)SEX[sxk(off,s)]=mg;});}
 function migSEX(old){const nw={};const wd={};Object.keys(DS).forEach(o=>{const off=parseInt(o);const s=DS[o];const w=o2w(off);if(!wd[w])wd[w]={};if(!wd[w][s])wd[w][s]=[];wd[w][s].push(off);});Object.keys(old).forEach(k=>{const m=k.match(/^(-?\d+)_(S[1-4])$/);if(!m)return;const num=parseInt(m[1]);const s=m[2];if(DS[num]!==undefined){nw[num+'_'+s]=old[k];}else{const days=(wd[num]&&wd[num][s])||[];if(days.length)nw[Math.min(...days)+'_'+s]=old[k];}});return nw;}
 function migrateWS(raw){const r={};Object.keys(raw).forEach(k=>{const v=raw[k];if(Array.isArray(v))r[k]=v;else if(typeof v==='string'&&v.trim())r[k]=[{date:fISO(now()),phase:'',text:v}];else r[k]=[];});return r;}
+function migrateLibRegions(){
+  const dlById={};DL.forEach(d=>{dlById[d.id]=d.region;});
+  let changed=false;
+  LIB.forEach(item=>{
+    if(!item.region){item.region=dlById[item.id]||'Other';changed=true;}
+  });
+  if(changed)persist();
+}
 function ld(){
   for(const src of['cb42','cb41','cb40','cb39','cb38','cb37','cb36','cb35','cb34','cb33','cb32','cb31']){
     const raw=localStorage.getItem(src+'d');
@@ -600,10 +608,10 @@ function ld(){
       const sc=JSON.parse(localStorage.getItem(src+'cf')||'null')||{};CF={...DEF_CF};if(sc.Strength!=null)CF.Strength=sc.Strength;if(sc.Walking!=null)CF.Walking=sc.Walking;if(sc.Other!=null)CF.Other=sc.Other;
       const rs=JSON.parse(localStorage.getItem(src+'sex')||'null')||{};
       SEX=['cb42','cb41','cb40','cb39','cb38','cb37','cb36','cb35'].includes(src)?rs:migSEX(rs);
-      if(!Object.keys(MEAS).length)seedM();applyPatches();persist();return;
+      if(!Object.keys(MEAS).length)seedM();applyPatches();migrateLibRegions();persist();return;
     }catch(e){}}
   }
-  PHASES=DP;LIB=DL;SEX={};ACT={};CF={...DEF_CF};WS={};seedM();persist();
+  PHASES=DP;LIB=DL;SEX={};ACT={};CF={...DEF_CF};WS={};seedM();migrateLibRegions();persist();
 }
 function seedM(){HIST.forEach(r=>{const{date,...v}=r;MEAS[date]=v;});}
 function persist(){try{localStorage.setItem('cb42d',JSON.stringify(DT));localStorage.setItem('cb42ck',JSON.stringify(CK));localStorage.setItem('cb42sk',JSON.stringify(SK));localStorage.setItem('cb42r',JSON.stringify(RT));localStorage.setItem('cb42n',JSON.stringify(NT));localStorage.setItem('cb42ds',JSON.stringify(DS));localStorage.setItem('cb42sv',JSON.stringify(SV));localStorage.setItem('cb42ov',JSON.stringify(OV));localStorage.setItem('cb42ph',JSON.stringify(PHASES));localStorage.setItem('cb42lib',JSON.stringify(LIB));localStorage.setItem('cb42sex',JSON.stringify(SEX));localStorage.setItem('cb42wk',String(TW));localStorage.setItem('cb42meas',JSON.stringify(MEAS));localStorage.setItem('cb42act',JSON.stringify(ACT));localStorage.setItem('cb42cf',JSON.stringify(CF));localStorage.setItem('cb42ws',JSON.stringify(WS));}catch(e){}}
