@@ -412,6 +412,7 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
   <div class="set-panel" id="set-library">
     <button class="set-back" id="back-library">‹ Settings</button>
     <div class="sl">Exercise library</div>
+    <div id="dup-warn"></div>
     <table class="lt"><thead><tr><th style="width:24%">Name</th><th style="width:22%">Note</th><th style="width:14%">Sets×reps</th><th style="width:26%">Region</th><th style="width:8%"></th></tr></thead><tbody id="ltb"></tbody></table>
     <button class="abtn2" id="alb" style="margin-top:.5rem">+ Add exercise</button>
   </div>
@@ -527,8 +528,8 @@ const PROG_EXCL=new Set(['cycling','walking','plank_s2','plank_s3']);
 const PROG_EXCL_NAMES=['cycling','daily walk','walking'];
 function isProgExcluded(id){
   if(PROG_EXCL.has(String(id).toLowerCase()))return true;
-  const nm=(lbi(id).n||'').toLowerCase();
-  return PROG_EXCL_NAMES.some(frag=>nm.includes(frag));
+  const nm=(lbi(id).n||'').toLowerCase().trim();
+  return PROG_EXCL_NAMES.includes(nm);
 }
 const REGIONS=['Chest','Back','Shoulders','Arms','Legs','Core'];
 const REGION_COLORS={Chest:'#6366f1',Back:'#0ea5e9',Shoulders:'#10b981',Arms:'#f59e0b',Legs:'#ec4899',Core:'#8b5cf6'};
@@ -759,6 +760,7 @@ function rdrPT(){const tb=document.getElementById('ptb');tb.innerHTML='';const s
 document.getElementById('apb').addEventListener('click',()=>{PHASES.push({label:'New phase',start:fISO(now()),kcal:2000,p:160,f:70,c:180});persist();rdrPT();updMacro();rdrW();});
 function rdrLT(){
   const tb=document.getElementById('ltb');tb.innerHTML='';
+  rdrDupWarn();
   const order=[...REGIONS,'Other'];
   order.forEach(region=>{
     const items=LIB.map((ex,i)=>({ex,i})).filter(o=>(o.ex.region||'Other')===region);
@@ -773,6 +775,62 @@ function rdrLT(){
       tb.appendChild(tr);
       tr.querySelectorAll('input,select').forEach(inp=>{inp.addEventListener('change',()=>{const ex2=LIB[parseInt(inp.dataset.i)];if(!ex2)return;ex2[inp.dataset.f]=inp.value;persist();if(inp.dataset.f==='region'){rdrLT();if(CV==='prog')rdrProg();}});});
       tr.querySelector('.db').addEventListener('click',function(){LIB.splice(parseInt(this.dataset.i),1);persist();rdrLT();});
+    });
+  });
+}
+function countLoggedEntries(id){let n=0;Object.keys(DT).forEach(k=>{if(k.endsWith('_'+id)){const v=DT[k];if(v&&(v[0]!==null||v[1]!==null))n++;}});return n;}
+function findDuplicateGroups(){
+  const byName={};
+  LIB.forEach(ex=>{
+    const norm=(ex.n||'').toLowerCase().trim().replace(/\s+/g,' ');
+    if(!norm)return;
+    if(!byName[norm])byName[norm]=[];
+    byName[norm].push(ex);
+  });
+  return Object.values(byName).filter(g=>g.length>1);
+}
+function mergeExercises(keepId,dupIds){
+  const stores=[DT,OV,CK,SK];
+  dupIds.forEach(dupId=>{
+    stores.forEach(store=>{
+      Object.keys(store).forEach(k=>{
+        if(k.endsWith('_'+dupId)){
+          const newKey=k.slice(0,k.length-dupId.length)+keepId;
+          if(store[newKey]===undefined||store[newKey]===null)store[newKey]=store[k];
+          delete store[k];
+        }
+      });
+    });
+    Object.keys(SEX).forEach(k=>{if(Array.isArray(SEX[k]))SEX[k]=SEX[k].map(id=>id===dupId?keepId:id);});
+    LIB=LIB.filter(e=>e.id!==dupId);
+  });
+  persist();
+  toast('Merged into one exercise');
+}
+function rdrDupWarn(){
+  const el=document.getElementById('dup-warn');if(!el)return;
+  const groups=findDuplicateGroups();
+  if(!groups.length){el.innerHTML='';return;}
+  let html='<div class="warn" style="margin-bottom:.85rem">⚠ Found '+groups.length+' possible duplicate exercise'+(groups.length>1?'s':'')+' — likely created by slightly different search text in the exercise picker. Pick which one to keep; the other\'s logged history merges into it.</div>';
+  groups.forEach((g,gi)=>{
+    html+='<div style="background:var(--bg-section);border:1px solid var(--b1);border-radius:var(--r2);padding:.7rem .85rem;margin-bottom:.7rem">';
+    html+='<div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:.5rem">"'+g[0].n+'" ('+g.length+' entries)</div>';
+    g.forEach((ex,ei)=>{
+      const cnt=countLoggedEntries(ex.id);
+      html+='<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;'+(ei<g.length-1?'border-bottom:1px solid var(--b0)':'')+'"><span style="font-size:11px;color:var(--ts)">'+cnt+' logged entr'+(cnt===1?'y':'ies')+' · region: '+(ex.region||'Other')+'</span><button class="ac-sb" data-group="'+gi+'" data-keepid="'+ex.id+'" style="margin-top:0">Keep this one</button></div>';
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+  el.querySelectorAll('button[data-keepid]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const gi=parseInt(btn.dataset.group);
+      const keepId=btn.dataset.keepid;
+      const group=groups[gi];
+      const others=group.filter(e=>e.id!==keepId).map(e=>e.id);
+      mergeExercises(keepId,others);
+      rdrLT();
+      if(CV==='prog')rdrProg();
     });
   });
 }
@@ -941,7 +999,11 @@ function rdrStabs(){
   el.appendChild(rb);
 }
 function oPkr(cell,idx,id,o){if(APC&&APC!==cell){const op=APC.querySelector('.pkr');if(op)op.classList.remove('open');}APC=cell;const pkr=cell.querySelector('.pkr');pkr.classList.toggle('open');if(!pkr.classList.contains('open')){APC=null;return;}const inp=pkr.querySelector('input');const lst=pkr.querySelector('.pkl');inp.value='';bPL(lst,idx,id,o,'');setTimeout(()=>inp.focus(),50);inp.oninput=()=>bPL(lst,idx,id,o,inp.value);}
-function bPL(lst,idx,id,o,f){lst.innerHTML='';const ri=document.createElement('div');ri.className='pki rem';ri.innerHTML='<div>⊘ Remove exercise</div>';ri.addEventListener('mousedown',e=>{e.preventDefault();const c=gSEX(o,CS);c.splice(idx,1);sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(ri);const fl=f.toLowerCase();LIB.filter(e=>!fl||e.n.toLowerCase().includes(fl)||e.t.toLowerCase().includes(fl)).forEach(ex=>{const item=document.createElement('div');item.className='pki';item.innerHTML='<div>'+ex.n+'</div><div class="pin">'+ex.t+'</div>';item.addEventListener('mousedown',e=>{e.preventDefault();const c=gSEX(o,CS);c[idx]=ex.id;sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(item);});if(f&&!LIB.some(e=>e.n.toLowerCase().includes(f.toLowerCase()))){const item=document.createElement('div');item.className='pki';item.style.color='var(--in-tx)';item.innerHTML='<div>+ Add "'+f+'" to library</div>';item.addEventListener('mousedown',e=>{e.preventDefault();const nid='ex_'+Date.now();LIB.push({id:nid,n:f,t:'',sets:3,r:'',region:'Other'});persist();const c=gSEX(o,CS);c[idx]=nid;sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(item);}}
+function bPL(lst,idx,id,o,f){lst.innerHTML='';const ri=document.createElement('div');ri.className='pki rem';ri.innerHTML='<div>⊘ Remove exercise</div>';ri.addEventListener('mousedown',e=>{e.preventDefault();const c=gSEX(o,CS);c.splice(idx,1);sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(ri);const fl=f.toLowerCase().trim().replace(/\s+/g,' ');LIB.filter(e=>!fl||e.n.toLowerCase().includes(fl)||e.t.toLowerCase().includes(fl)).forEach(ex=>{const item=document.createElement('div');item.className='pki';item.innerHTML='<div>'+ex.n+'</div><div class="pin">'+ex.t+'</div>';item.addEventListener('mousedown',e=>{e.preventDefault();const c=gSEX(o,CS);c[idx]=ex.id;sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(item);});
+  // Normalize whitespace and check both directions (query-in-name AND name-in-query) so minor
+  // wording differences (trailing space, slight rewording) don't silently spawn a duplicate entry.
+  const nearMatch=fl&&LIB.some(e=>{const en=e.n.toLowerCase().trim().replace(/\s+/g,' ');return en.includes(fl)||fl.includes(en);});
+  if(f&&fl&&!nearMatch){const item=document.createElement('div');item.className='pki';item.style.color='var(--in-tx)';item.innerHTML='<div>+ Add "'+f+'" to library</div>';item.addEventListener('mousedown',e=>{e.preventDefault();const nid='ex_'+Date.now();LIB.push({id:nid,n:f,t:'',sets:3,r:'',region:'Other'});persist();const c=gSEX(o,CS);c[idx]=nid;sSEX(o,CS,c);APC=null;rdrTable();});lst.appendChild(item);}}
 function addExRow(){const o=aOff();if(isR(o)||isLk(o,CS))return;const ids=gSEX(o,CS);ids.push('__new__');sSEX(o,CS,ids);rdrTable();setTimeout(()=>{const ps=document.querySelectorAll('.pb2');if(ps.length)ps[ps.length-1].click();},60);}
 function getPrv(s,id,co){const days=gDS(s).filter(o=>o<co);for(const o of days){if(wSk(o,s,id))continue;const v=DT[dkd(o,s,id)];if(v&&(v[0]!==null||v[1]!==null)){const ov=OV[ovk(o,s,id)];return{wt:v[0],rp:v[1],sets:parseInt(ov?ov.sets:lbi(id).sets)||3};}}return null;}
 function getLst(id,co,cs2){const sd=gDS(cs2).filter(o=>o<co);for(const o of sd){if(wSk(o,cs2,id))continue;const v=DT[dkd(o,cs2,id)];if(v&&(v[0]!==null||v[1]!==null))return{wt:v[0],rp:v[1]};}for(const s of['S1','S2','S3','S4']){if(s===cs2)continue;const od=gDS(s).filter(o=>o<=co);for(const o of od){const v=DT[dkd(o,s,id)];if(v&&(v[0]!==null||v[1]!==null))return{wt:v[0],rp:v[1]};}}return null;}
