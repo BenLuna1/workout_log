@@ -449,7 +449,7 @@ textarea.nt:disabled{opacity:.45;background:transparent;border-color:transparent
   <div class="set-panel" id="set-goalsrows">
     <button class="set-back" id="back-goalsrows">‹ Settings</button>
     <div class="sl">Daily Goals — Rows</div>
-    <table class="lt"><thead><tr><th style="width:26%">Label</th><th style="width:14%">Type</th><th style="width:48%">Details</th><th style="width:8%"></th></tr></thead><tbody id="grtb"></tbody></table>
+    <table class="lt"><thead><tr><th style="width:5%"></th><th style="width:24%">Label</th><th style="width:13%">Type</th><th style="width:45%">Details</th><th style="width:8%"></th></tr></thead><tbody id="grtb"></tbody></table>
     <div style="display:flex;gap:8px;margin-top:.6rem">
       <button class="abtn2" id="grab-toggle" style="margin-top:0">+ Toggle row</button>
       <button class="abtn2" id="grab-counter" style="margin-top:0">+ Counter row</button>
@@ -1495,7 +1495,7 @@ function rdrGoals(){
   const wkSelHdr=document.createElement('div');wkSelHdr.className='wk-sel-hdr';
   const wkSelLabel=document.createElement('div');wkSelLabel.className='wk-sel-label';wkSelLabel.textContent='Week '+goalsWeek+' · '+fmtDM(w2o(goalsWeek))+' – '+fmtDM(w2o(goalsWeek)+6);
   const wkSelDrop=document.createElement('select');wkSelDrop.className='wk-sel-drop';
-  for(let w=1;w<=TW;w++){const opt=document.createElement('option');opt.value=w;opt.textContent='W'+w+' · '+fmtDM(w2o(w))+'–'+fmtDM(w2o(w)+6);if(w===goalsWeek)opt.selected=true;wkSelDrop.appendChild(opt);}
+  for(let w=1;w<=TW;w++){const opt=document.createElement('option');opt.value=w;opt.textContent='W'+w;if(w===goalsWeek)opt.selected=true;wkSelDrop.appendChild(opt);}
   wkSelDrop.addEventListener('change',()=>{goalsWeek=parseInt(wkSelDrop.value)||goalsWeek;rdrGoals();});
   wkSelHdr.appendChild(wkSelLabel);wkSelHdr.appendChild(wkSelDrop);
   el.appendChild(wkSelHdr);
@@ -1506,7 +1506,7 @@ function rdrGoals(){
   for(let i=0;i<7;i++){
     const o=wkStart+i;const d=dfo(o);
     const cell=document.createElement('div');cell.className='dg-daycol'+(o===to?' today':'');
-    cell.innerHTML='<div>'+fmtD3(o).toUpperCase()+'</div><div class="dg-daynum">'+ordinalDay(d.getDate())+' '+MN[d.getMonth()].slice(0,3)+'</div>';
+    cell.innerHTML='<div>'+fmtD3(o).toUpperCase()+'</div><div class="dg-daynum">'+ordinalDay(d.getDate())+'</div>';
     grid.appendChild(cell);
   }
   GOALS_ROWS.forEach(row=>{
@@ -1524,10 +1524,11 @@ function rdrGoals(){
         const val=getGoal(dateISO,row.id);
         if(val==='pos'){cell.classList.add('pos');cell.textContent='✓';}
         else if(val==='neg'){cell.classList.add('neg');cell.textContent='✗';}
+        else if(val==='na'){cell.classList.add('rest');cell.textContent='–';}
         if(!future){
           cell.addEventListener('click',()=>{
             const cur=getGoal(dateISO,row.id);
-            const next=cur===undefined?'pos':(cur==='pos'?'neg':undefined);
+            const next=cur===undefined?'pos':(cur==='pos'?'neg':(cur==='neg'?'na':undefined));
             setGoal(dateISO,row.id,next);rdrGoals();
           });
         }else{cell.classList.add('future');}
@@ -1562,7 +1563,7 @@ function rdrGoalsRows(){
     }else{
       detailsHtml='<span style="font-size:11px;color:var(--tm)">Auto-tracked from training log</span>';
     }
-    tr.innerHTML='<td><input class="fi" type="text" value="'+row.label+'" data-i="'+i+'" data-f="label"></td><td style="font-size:10px;color:var(--tm);text-transform:uppercase">'+row.type+'</td><td>'+detailsHtml+'</td><td>'+(row.locked?'':'<button class="db" data-i="'+i+'">✕</button>')+'</td>';
+    tr.innerHTML='<td style="width:20px"><span class="drag-handle" title="Drag to reorder">⠿</span></td><td><input class="fi" type="text" value="'+row.label+'" data-i="'+i+'" data-f="label"></td><td style="font-size:10px;color:var(--tm);text-transform:uppercase">'+row.type+'</td><td>'+detailsHtml+'</td><td>'+(row.locked?'':'<button class="db" data-i="'+i+'">✕</button>')+'</td>';
     tb.appendChild(tr);
     tr.querySelectorAll('input').forEach(inp=>{
       inp.addEventListener('change',()=>{
@@ -1575,6 +1576,37 @@ function rdrGoalsRows(){
     });
     const delBtn=tr.querySelector('.db');
     if(delBtn)delBtn.addEventListener('click',function(){GOALS_ROWS.splice(parseInt(this.dataset.i),1);persist();rdrGoalsRows();if(CV==='goals')rdrGoals();});
+  });
+  wireGoalsRowReorder(tb);
+}
+function wireGoalsRowReorder(tbody){
+  let dragIdx=null,dragRow=null;
+  const rows=()=>Array.from(tbody.querySelectorAll('tr'));
+  const getIdx=(tr)=>rows().indexOf(tr);
+  const onDragStart=(tr,idx)=>{dragIdx=idx;dragRow=tr;tr.classList.add('dragging-row');};
+  const onDragOver=(tr)=>{if(!dragRow||tr===dragRow)return;rows().forEach(r=>r.classList.remove('drag-over'));tr.classList.add('drag-over');};
+  const onDrop=(tr)=>{
+    if(!dragRow)return;
+    const toIdx=getIdx(tr);
+    if(dragIdx===null||dragIdx===toIdx){cleanup();return;}
+    const moved=GOALS_ROWS.splice(dragIdx,1)[0];
+    GOALS_ROWS.splice(toIdx,0,moved);
+    persist();cleanup();
+    rdrGoalsRows();
+    if(CV==='goals')rdrGoals();
+  };
+  const cleanup=()=>{dragIdx=null;dragRow=null;rows().forEach(r=>{r.classList.remove('dragging-row');r.classList.remove('drag-over');});};
+  rows().forEach((tr,idx)=>{
+    const handle=tr.querySelector('.drag-handle');if(!handle)return;
+    handle.addEventListener('mousedown',e=>{
+      e.preventDefault();onDragStart(tr,idx);
+      const onMove=e2=>{const el=document.elementFromPoint(e2.clientX,e2.clientY);const targetRow=el?el.closest('tr'):null;if(targetRow&&tbody.contains(targetRow))onDragOver(targetRow);};
+      const onUp=e2=>{const el=document.elementFromPoint(e2.clientX,e2.clientY);const targetRow=el?el.closest('tr'):null;if(targetRow&&tbody.contains(targetRow))onDrop(targetRow);else cleanup();window.removeEventListener('mousemove',onMove);window.removeEventListener('mouseup',onUp);};
+      window.addEventListener('mousemove',onMove);window.addEventListener('mouseup',onUp);
+    });
+    handle.addEventListener('touchstart',e=>{e.preventDefault();onDragStart(tr,idx);},{passive:false});
+    handle.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];const el=document.elementFromPoint(t.clientX,t.clientY);const targetRow=el?el.closest('tr'):null;if(targetRow&&tbody.contains(targetRow))onDragOver(targetRow);},{passive:false});
+    handle.addEventListener('touchend',e=>{const t=e.changedTouches[0];const el=document.elementFromPoint(t.clientX,t.clientY);const targetRow=el?el.closest('tr'):null;if(targetRow&&tbody.contains(targetRow))onDrop(targetRow);else cleanup();});
   });
 }
 document.getElementById('grab-toggle').addEventListener('click',()=>{GOALS_ROWS.push({id:'row_'+Date.now(),label:'New row',type:'toggle',posLabel:'Yes',negLabel:'No'});persist();rdrGoalsRows();if(CV==='goals')rdrGoals();});
